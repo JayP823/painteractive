@@ -18,6 +18,32 @@ app.use('/user', require('./routes/user.router'));
 app.use('/post', require('./routes/post.router'));
 
 app.get('/', function(req, res){
-    res.send("Hello world!");
+    var func = require('./_helpers/database').then(function(gfsConn){
+        gfsConn.gfs.files.find().toArray((err, file) =>{
+        if(!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No file exists'
+            });
+        }
+        let fileNames = [];
+        for(let i = 0; i < file.length; i++){
+            fileNames.push(file[i].filename)
+        }
+        return res.json(fileNames);
+        });
+    });
 });
+
+app.get('/:id', function(req, res){
+    var func = require('./_helpers/database').then(function(gfsConn){
+        gfsConn.gfs.files.findOne({filename: req.params.id}, (err, file) =>{
+        if (!file || file.length === 0) {
+            res.render('index', { file: false });
+        } else {
+            const readstream = gfsConn.gfs.createReadStream(file.filename);
+        readstream.pipe(res);
+        }
+        });
+    });
+})
 
