@@ -1,20 +1,31 @@
-var express = require('express');
-const mongo = require('mongodb');
-const db = require('../_helpers/database');
-var Grid = require('gridfs-stream');
-const gfs = Grid(db, mongo);
-var app = express();
-
 module.exports = {
-    upload
+    getPostInfo,
+    showPost
 }
 
-async function upload(image){
-    var writeStream = gfs.createWriteStream({
-        filenale: 'file_name_here'
+function getPostInfo(req, res){
+    var func = require('../_helpers/database').then(function(gfsConn){
+        gfsConn.gfs.files.findOne({filename: req.params.id}, (err, file) =>{
+        if(!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No file exists'
+            });
+        }
+        return res.json(file);
+        });
     });
-    writeStream.on('close', function(file){
-        res.send(`File has been uploaded ${file._id}`);
+}
+
+function showPost(req, res){
+    var func = require('../_helpers/database').then(function(gfsConn){
+        gfsConn.gfs.files.findOne({filename: req.params.id}, (err, file) =>{
+        if(!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No file exists'
+            });
+        }
+        const readstream = gfsConn.gfs.createReadStream(file.filename);
+        readstream.pipe(res);
+        });
     });
-    req.pipe(writeStream);
 }
