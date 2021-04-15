@@ -9,7 +9,8 @@ module.exports = {
 function createPost(req, res, next){   
     console.log(req.user);
     postService.createPost(req, req.file.filename);
-    res.json({file: req.file});
+    //res.json({file: req.file});
+    res.redirect('/')
 }
 
 function getPost(req, res){

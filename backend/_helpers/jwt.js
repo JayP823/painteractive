@@ -7,7 +7,7 @@ module.exports = jwt;
 function jwt(){
     const secret = config.secret;
     return new expressJwt({secret, isRevoked, algorithms: ['HS256']}).unless({
-        path: /^\/(post\/(?!new)(.*|show\/.*))|\/(user\/(register|authenticate))|\/$/
+        path: /^\/(post\/(?!new)(.*|show\/.*))|\/(user\/(register|authenticate))|\/login|\/$/
     });
 }
 

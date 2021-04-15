@@ -6,11 +6,10 @@ module.exports = {
 
 async function createPost(req, file) {
     var func = require('../_helpers/database');
-    let gfs, conn, Post;
+    let gfs, Post;
     let resp = {};
     await func.then((gfsConn) => {
         gfs = gfsConn.gfs;
-        conn = gfsConn.conn;
         Post = gfsConn.Post;
     });
     await gfs.files.findOne({filename: file}, (err, file) =>{
@@ -25,19 +24,25 @@ async function createPost(req, file) {
 
 async function getPostInfo(req, res){
     var func = require('../_helpers/database');
-    let gfs, conn;
+    let gfs, conn, Post;
     await func.then((gfsConn) => {
         gfs = gfsConn.gfs;
         conn = gfsConn.conn;
+        Post = gfsConn.Post;
     });
-
+    let resp = {};
     gfs.files.findOne({filename: req.params.id}, (err, file) =>{
         if(!file || file.length === 0) {
             return res.status(404).json({
                 err: 'No file exists'
             });
         }
-        return res.json(file);
+        resp.file = file;
+        Post.findOne({image: file._id}).then(post => {
+            resp.post = post;
+            return res.json(resp);
+        });
+
     });
 }
 
