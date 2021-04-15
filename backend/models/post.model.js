@@ -4,10 +4,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     createdBy: {type: Schema.Types.ObjectId, ref: 'User'},
     description: {type: String},
-    image: {
-        data: Buffer,
-        contentType: String
-    }
+    image: {type: Schema.Types.ObjectId}
 });
 
 schema.set('toJSON', {virtuals: true});

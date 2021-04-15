@@ -2,7 +2,8 @@ const config = require('../config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/database');
-const User = db.User;
+//const User = db.User;
+//const User = require('../models/user.model');
 
 module.exports = {
     getByUsername,
@@ -11,10 +12,22 @@ module.exports = {
 }
 
 async function getByUsername(username){
+    var func = require('../_helpers/database');
+    let User;
+    await func.then((gfsConn) => {
+        User = gfsConn.User;
+    });
+    
     return await User.find({username: username});
 }
 
 async function register(userParam){
+    var func = require('../_helpers/database');
+    let User;
+    await func.then((gfsConn) => {
+        User = gfsConn.User;
+    });
+
     if(await User.findOne({username: userParam.username})){
         throw 'Username ' + userParam.username + ' is already taken';
     }
@@ -32,10 +45,17 @@ async function register(userParam){
 }
 
 async function authenticate({username, password}){
-    const user = await User.findOne({username});
-    if(user && bcrypt.compareSync(password, user.hash)) {
-        const {hash, ...userWithoutHash} = user.toObject();
-        const token = jwt.sign({sub: user.id}, config.secret);
+    var func = require('../_helpers/database');
+    let User;
+    await func.then((gfsConn) => {
+        User = gfsConn.User;
+    });
+
+    const userObj = await User.findOne({username: username});
+
+    if(userObj && bcrypt.compareSync(password, userObj.hash)) {
+        const {hash, ...userWithoutHash} = userObj.toObject();
+        const token = jwt.sign({sub: userObj.id}, config.secret);
         return {
             ...userWithoutHash,
             token

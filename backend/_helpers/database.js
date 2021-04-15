@@ -1,20 +1,21 @@
 const config = require('../config.json');
 const mongoose = require('mongoose');
-const conn = mongoose.createConnection(config.connectionString, {useCreateIndex: true, useNewUrlParser: true});
+mongoose.connect(config.connectionString, {useCreateIndex: true, useNewUrlParser: true})
+const db = mongoose.connection;
 const Grid = require('gridfs-stream');
 
 let gfs;
-let test = 5;
-
-
-
 
 module.exports = 
     new Promise(function(resolve, reject){
-        conn.once('open', () => {
-            gfs = Grid(conn.db, mongoose.mongo);
+        db.once('open', () => {
+            gfs = Grid(db.db, mongoose.mongo);
             gfs.collection('uploads');
-            let newJson = {gfs: gfs, conn: conn}
+            let newJson = {
+                gfs: gfs, 
+                conn: db, 
+                User: require('../models/user.model'),
+                Post: require('../models/post.model')}
             resolve(newJson);
         });
     })
