@@ -1,12 +1,43 @@
-.App {
-  text-align: center;
+* {
   margin: 0;
+  outline: 0;
 }
 
-.navbar {
-  min-height: 10vh;
-  background-color: gray;
+.App {
   margin: 0;
+  min-height: 100vh;
+  background-color: #9fc5f8;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.flex-header {
+  flex-basis: 30vw;
+}
+
+.flex-body {
+  flex-basis: 70vw;
+  overflow: auto;
+  background-color: #bcafe0;
+}
+
+.sidebar {
+  height: 80vh;
+  max-width: 12vw;
+  margin: 10vh auto;
+  padding: 10px;
+  background-color: #8e7cc3;
+  border: 5px solid black;
+  box-sizing: border-box;
+  display: block;
+}
+
+Switch {
+  margin-left: 20vw;
 }
 
 .nav-list li {
