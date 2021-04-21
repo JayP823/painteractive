@@ -2,16 +2,21 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const http = require('http')
+
+const jwt = require('./_helpers/jwt');
 
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 2121;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.raw({
-    type: 'image/png',
-    limit: '50mb'
-}));
+
+
+app.set('view engine', 'ejs');
+
+app.use(jwt());
+
 
 app.listen(port, function(){
     console.log("Server listening on port " + port);
@@ -20,7 +25,25 @@ app.listen(port, function(){
 app.use('/user', require('./routes/user.router'));
 app.use('/post', require('./routes/post.router'));
 
-app.get('/', function(req, res){
-    res.send("Hello world!");
+app.get('/', async function(req, res){
+    let func = require('./_helpers/database');
+    let gfs, Post;
+    await func.then((gfsConn) => {
+        gfs = gfsConn.gfs;
+        Post = gfsConn.Post;
+    });
+    let ret = [];
+    var func2 = new Promise((resolve, reject) => {
+        http.get(`http://localhost:2121/post/all`, (resp) => {
+            resp.on('data', (posts) => {ret = JSON.parse(posts); resolve();});
+        })
+    })    
+    func2.then(()=>{
+        res.render('index', {files: ret});
+    })
 });
+
+app.get('/login', (req, res) => {
+    res.render('login')
+})
 
