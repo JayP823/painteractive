@@ -51,8 +51,10 @@ async function authenticate({username, password}){
         User = gfsConn.User;
     });
 
-    const userObj = await User.findOne({username: username});
-
+    let userObj = await User.findOne({username: username});
+    if(!userObj){
+        userObj = await User.findOne({email: username});
+    }
     if(userObj && bcrypt.compareSync(password, userObj.hash)) {
         const {hash, ...userWithoutHash} = userObj.toObject();
         const token = jwt.sign({sub: userObj.id}, config.secret);
