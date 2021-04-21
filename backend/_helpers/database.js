@@ -14,6 +14,7 @@ module.exports =
             let newJson = {
                 gfs: gfs, 
                 conn: db, 
+                File: require('../models/file.model'),
                 User: require('../models/user.model'),
                 Post: require('../models/post.model')}
             resolve(newJson);

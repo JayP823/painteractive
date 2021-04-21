@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const http = require('http')
 
 const jwt = require('./_helpers/jwt');
 
@@ -26,53 +27,23 @@ app.use('/post', require('./routes/post.router'));
 
 app.get('/', async function(req, res){
     let func = require('./_helpers/database');
-    let gfs;
+    let gfs, Post;
     await func.then((gfsConn) => {
         gfs = gfsConn.gfs;
+        Post = gfsConn.Post;
     });
-
-    await gfs.files.find().toArray((err, file) =>{
-        if(!file || file.length === 0) {
-            res.render('index', {files: false});
-        } else {
-            file.map(files => {
-              if (
-                files.contentType === 'image/jpeg' ||
-                files.contentType === 'image/png' ||
-                files.contentType === 'image/gif'
-              ) {
-                files.isImage = true;
-              } else {
-                files.isImage = false;
-              }
-            });
-        }
-        let fileNames = [];
-        for(let i = 0; i < file.length; i++){
-            fileNames.push(file[i].filename)
-        }
-        res.render('index', {files: file});
-    });
+    let ret = [];
+    var func2 = new Promise((resolve, reject) => {
+        http.get(`http://localhost:2121/post/all`, (resp) => {
+            resp.on('data', (posts) => {ret = JSON.parse(posts); resolve();});
+        })
+    })    
+    func2.then(()=>{
+        res.render('index', {files: ret});
+    })
 });
 
 app.get('/login', (req, res) => {
     res.render('login')
-})
-
-app.get('/:id', async function(req, res){
-    let func = require('./_helpers/database');
-    let gfs;
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-    })
-
-    gfs.files.findOne({filename: req.params.id}, (err, file) =>{
-        if (!file || file.length === 0) {
-            res.render('index', { file: false });
-        } else {
-            const readstream = gfs.createReadStream(file.filename);
-            readstream.pipe(res);
-        }
-    });
 })
 

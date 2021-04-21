@@ -23,12 +23,9 @@
           <% if(files){ %>
             <% files.slice().reverse().forEach(function(file) { %>
               <div class="card card-body mb-3">
-                <% if(file.isImage) { %>
-                  <img src="post/show/<%= file.filename %>" alt="">
-                  <%= file.filename %>
-                  <% } else { %>
-                    <%= file.filename %>
-                      <% } %>
+                  <img src="post/show/<%= file.image.filename %>" alt="" onclick="javascript:window.location='post/show/<%= file.image.filename %>';">
+                  <p><%=file.description%></p>
+                  <p>Created by: <%=file.createdBy.username%> on <%=new Date(file.createdDate)%></p>
               </div>
               <% }) %>
                 <% } else { %>
