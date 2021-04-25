@@ -8,17 +8,37 @@
 
 .content {
     min-height: 500px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
+    border: 3px solid black;
+    box-sizing: border-box;
+}
+
+.image-container {
+    flex-basis: 200px;
+    flex-grow: 4;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ece8f7;
 }
 
 .image {
-    flex-basis: 85%;
+    margin: auto;
 }
 
 .details {
-    flex-basis: 15%;
+    flex-grow: 1;
+    display: flex;
+}
+
+.description {
+    flex-grow: 7;
+    padding-left: 7%;
+}
+
+.user {
+    flex-grow: 3;
 }
 
 .tags {
@@ -55,4 +75,8 @@
 
 .interaction-list {
     display: flex;
+}
+
+.like-icon {
+    color: red;
 }

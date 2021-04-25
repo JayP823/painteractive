@@ -29,18 +29,45 @@
   height: 80vh;
   max-width: 12vw;
   margin: 10vh auto;
-  padding: 10px;
+  padding: 20px;
   background-color: #8e7cc3;
-  border: 5px solid black;
+  border: 4px solid black;
   box-sizing: border-box;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 Switch {
   margin-left: 20vw;
 }
 
+.logo {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.nav-list {
+  margin-top: 40px;
+  padding: 0 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .nav-list li {
-  display: inline;
-  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-basis: 12%;
+  margin-bottom: 20%;
+  cursor: pointer;
+}
+
+.nav-list-link {
+  width: 100%;
+}
+
+.profile {
+  /* TODO - Make a circular profile container */
+  flex-grow: 2;
 }

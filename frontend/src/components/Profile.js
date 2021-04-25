@@ -1,3 +1,5 @@
+import './Profile.css'
+
 function Profile () {
     return (
         <p>You're mom</p>
