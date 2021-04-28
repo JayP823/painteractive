@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('../config.js');
 const mongoose = require('mongoose');
 mongoose.connect(config.connectionString, {useCreateIndex: true, useNewUrlParser: true})
 const db = mongoose.connection;
