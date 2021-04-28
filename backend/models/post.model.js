@@ -7,8 +7,9 @@ const schema = new Schema({
     createdDate: {type: Date, default: Date.now},
     description: {type: String},
     imageName: {type: String},
-    image: {type: Schema.Types.Object, ref: 'File'}
-});
+    image: {type: Schema.Types.Object, ref: 'File'},
+    tags: [{type: String}]
+})
 
 schema.set('toJSON', {virtuals: true});
 

@@ -5,7 +5,8 @@ module.exports = {
     createPost,
     getPost,
     showImage,
-    getAllPostInfo
+    getAllPostInfo,
+    getPostsWithTag
 }
 
 function createPost(req, res, next){   
@@ -25,4 +26,8 @@ function showImage(req, res){
 
 function getAllPostInfo(req,res){
     postService.getAllPostInfo(req,res);
+}
+
+function getPostsWithTag(req,res){
+    postService.getPostsWithTag(req,res);
 }

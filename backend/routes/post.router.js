@@ -32,6 +32,7 @@ router.post('/new', upload.single('file'), postController.createPost);
 router.get('/all', postController.getAllPostInfo)
 router.get('/:id', postController.getPost);
 router.get('/show/:id', postController.showImage);
+router.get('/tag/:tag', postController.getPostsWithTag);
 
 
 module.exports = router;

@@ -26,6 +26,11 @@
                   <img src="post/show/<%= file.image.filename %>" alt="" onclick="javascript:window.location='post/show/<%= file.image.filename %>';">
                   <p><%=file.description%></p>
                   <p>Created by: <%=file.createdBy.username%> on <%=new Date(file.createdDate)%></p>
+                  <p> Tags: 
+                  <%file.tags.forEach((tag, index) => {%>
+                    <a href = "post/tag/<%= tag%>"><%=tag%></a><%if(index != file.tags.length-1){%>,<%}%>
+                  <%})%>
+                  </p>
               </div>
               <% }) %>
                 <% } else { %>

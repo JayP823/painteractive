@@ -2,7 +2,8 @@ module.exports = {
     createPost,
     getPostInfo,
     showImage,
-    getAllPostInfo
+    getAllPostInfo,
+    getPostsWithTag
 }
 
 async function createPost(req, file) {
@@ -18,6 +19,8 @@ async function createPost(req, file) {
         resp.imageName = file.filename;
         resp.createdBy = req.user.sub;
         resp.description = req.body.desc;
+        
+        resp.tags = req.body.tags.split(', ');
         const post = new Post(resp);
         post.save();
     });
@@ -66,5 +69,20 @@ async function showImage(req, res){
         }
         const readstream = gfs.createReadStream(file.filename);
         readstream.pipe(res);
+    });
+}
+
+async function getPostsWithTag(req, res){
+    var func = require('../_helpers/database');
+    let gfs, conn;
+    await func.then((gfsConn) => {
+        gfs = gfsConn.gfs;
+        conn = gfsConn.conn;
+        Post = gfsConn.Post;
+    });
+    let resp = {};
+    console.log(req.params.tag)
+    Post.find({tags: req.params.tag}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+        res.json(post);
     });
 }
