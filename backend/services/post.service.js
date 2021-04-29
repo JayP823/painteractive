@@ -3,17 +3,20 @@ module.exports = {
     getPostInfo,
     showImage,
     getAllPostInfo,
-    getPostsWithTag
+    getPostsWithTag,
+    addTag,
+    deleteTag
 }
 
+var func = require('../_helpers/database');
+let gfs, conn, Post;
+func.then((gfsConn) => {
+    gfs = gfsConn.gfs;
+    conn = gfsConn.conn;
+    Post = gfsConn.Post;
+});
+
 async function createPost(req, file) {
-    var func = require('../_helpers/database');
-    let gfs, Post;
-    let resp = {};
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-        Post = gfsConn.Post;
-    });
     await gfs.files.findOne({filename: file}, (err, file) =>{
         resp.image = file._id;
         resp.imageName = file.filename;
@@ -28,39 +31,18 @@ async function createPost(req, file) {
 }
 
 async function getPostInfo(req, res){
-    var func = require('../_helpers/database');
-    let gfs, conn, Post;
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-        conn = gfsConn.conn;
-        Post = gfsConn.Post;
-    });
     Post.findOne({imageName: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
 
 async function getAllPostInfo(req, res){
-    var func = require('../_helpers/database');
-    let gfs, conn, Post;
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-        conn = gfsConn.conn;
-        Post = gfsConn.Post;
-    });
     Post.find().populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
 
 async function showImage(req, res){
-    var func = require('../_helpers/database');
-    let gfs, conn;
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-        conn = gfsConn.conn;
-    });
-    let resp = {};
     gfs.files.findOne({filename: req.params.id}, (err, file) =>{
         if(!file || file.length === 0) {
             return res.status(404).json({
@@ -73,16 +55,28 @@ async function showImage(req, res){
 }
 
 async function getPostsWithTag(req, res){
-    var func = require('../_helpers/database');
-    let gfs, conn;
-    await func.then((gfsConn) => {
-        gfs = gfsConn.gfs;
-        conn = gfsConn.conn;
-        Post = gfsConn.Post;
-    });
-    let resp = {};
-    console.log(req.params.tag)
     Post.find({tags: req.params.tag}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
+    });
+}
+
+async function addTag(req, res){
+    Post.findOne({imageName: req.body.imageName}).then(post => {
+        let tags = post.tags.concat(req.body.tags.split(', '));
+        tags = [...new Set(tags)];
+        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
+            res.json(post);
+        });
+    });
+}
+
+async function deleteTag(req, res){
+    Post.findOne({imageName: req.body.imageName}).then(post => {
+        let tags = post.tags.filter(tag => !(req.body.tags.split(', ').includes(tag)));
+        console.log(tags);
+        tags = [...new Set(tags)];
+        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
+            res.json(post);
+        });
     });
 }

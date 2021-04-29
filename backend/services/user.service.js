@@ -8,23 +8,17 @@ module.exports = {
     authenticate
 }
 
+var func = require('../_helpers/database');
+let User;
+func.then((gfsConn) => {
+    User = gfsConn.User;
+});
+
 async function getByUsername(username){
-    var func = require('../_helpers/database');
-    let User;
-    await func.then((gfsConn) => {
-        User = gfsConn.User;
-    });
-    
     return await User.find({username: username});
 }
 
 async function register(userParam){
-    var func = require('../_helpers/database');
-    let User;
-    await func.then((gfsConn) => {
-        User = gfsConn.User;
-    });
-
     if(await User.findOne({username: userParam.username})){
         throw 'Username ' + userParam.username + ' is already taken';
     }
@@ -42,12 +36,6 @@ async function register(userParam){
 }
 
 async function authenticate({username, password}){
-    var func = require('../_helpers/database');
-    let User;
-    await func.then((gfsConn) => {
-        User = gfsConn.User;
-    });
-
     let userObj = await User.findOne({username: username});
     if(!userObj){
         userObj = await User.findOne({email: username});

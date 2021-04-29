@@ -6,7 +6,9 @@ module.exports = {
     getPost,
     showImage,
     getAllPostInfo,
-    getPostsWithTag
+    getPostsWithTag,
+    addTag,
+    deleteTag
 }
 
 function createPost(req, res, next){   
@@ -30,4 +32,12 @@ function getAllPostInfo(req,res){
 
 function getPostsWithTag(req,res){
     postService.getPostsWithTag(req,res);
+}
+
+function addTag(req, res){
+    postService.addTag(req, res);
+}
+
+function deleteTag(req, res){
+    postService.deleteTag(req, res);
 }

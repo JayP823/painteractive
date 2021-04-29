@@ -3,14 +3,16 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const http = require('http')
+const mongoose = require('mongoose');
+
 
 const jwt = require('./_helpers/jwt');
 
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 2121;
 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false, limit: '1mb'}));
+app.use(bodyParser.json({limit: '1mb'}));
 
 
 app.set('view engine', 'ejs');
@@ -49,3 +51,16 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 
+process.on('SIGINT', function() {
+    mongoose.connection.close(function(){
+        console.log("app interrupted (ctrl + c)");
+        process.exit(0);
+    });
+})
+
+process.on('SIGTERM', function() {
+    mongoose.connection.close(function(){
+        console.log("app terminated");
+        process.exit(0);
+    });
+})
