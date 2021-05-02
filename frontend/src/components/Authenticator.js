@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import Modal from 'react-modal';
 import axios from "axios";
 
+const dotenv = require('dotenv').config();
+
 const customModalStyles = {
     content: {
         top            : '40%',
@@ -68,7 +70,7 @@ function Login (props) {
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-        axios.post('http://localhost:2121/user/authenticate', { username: username.value, password: password.value }).then(response => {
+        axios.post(`http://${process.env.HOST}/user/authenticate`, { username: username.value, password: password.value }).then(response => {
             setLoading(false);
             props.invokeLogIn(response.data);
             //TODO - setUserSession(response.data.token, response.data.user);
@@ -109,7 +111,7 @@ function Register () {
         // TODO - Check fields for validity
         setError(null);
         setLoading(true);
-        axios.post('http://localhost:2121/user/register', { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
+        axios.post(`http://${process.env.HOST}:2121/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
             setLoading(false);
             console.log("gaming");
             //TODO - setUserSession(response.data.token, response.data.user);

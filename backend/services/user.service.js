@@ -5,7 +5,8 @@ const bcrypt = require('bcryptjs');
 module.exports = {
     getByUsername,
     register,
-    authenticate
+    authenticate,
+    updateUser
 }
 
 var func = require('../_helpers/database');
@@ -48,4 +49,26 @@ async function authenticate({username, password}){
             token
         };
     }
+}
+
+async function updateUser(userParam, userID, res){
+    let user = await User.findOne({_id: userID});
+    if(userParam.newUsername){
+        user.username = userParam.newUsername;
+    }
+    if(userParam.newEmail){
+        user.email = userParam.newEmail;
+    }
+    if(userParam.newFirstName){
+        user.firstName = userParam.newFirstName;
+    }
+    if(userParam.newLastName){
+        user.lastName = userParam.newLastName;
+    }
+    if(userParam.newPassword){
+        user.hash = bcrypt.hashSync(userParam.newPassword, 10);
+    }
+    User.updateOne({_id: userID}, user).then((post) => {
+        res.json(post);
+    });
 }

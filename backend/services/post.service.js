@@ -3,6 +3,7 @@ module.exports = {
     getPostInfo,
     showImage,
     getAllPostInfo,
+    getSomePostInfo,
     getPostsWithTag,
     addTag,
     deleteTag
@@ -38,6 +39,15 @@ async function getPostInfo(req, res){
 
 async function getAllPostInfo(req, res){
     Post.find().populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+        res.json(post);
+    });
+}
+
+async function getSomePostInfo(req, res){
+    if(!req.query.date){
+        req.query.date = new Date();
+    }
+    Post.find({createdDate: {$lt: req.query.date}}).limit(parseInt(req.query.limit)).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }

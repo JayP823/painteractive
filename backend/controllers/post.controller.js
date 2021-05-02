@@ -6,6 +6,7 @@ module.exports = {
     getPost,
     showImage,
     getAllPostInfo,
+    getSomePostInfo,
     getPostsWithTag,
     addTag,
     deleteTag
@@ -28,6 +29,10 @@ function showImage(req, res){
 
 function getAllPostInfo(req,res){
     postService.getAllPostInfo(req,res);
+}
+
+function getSomePostInfo(req,res){
+    postService.getSomePostInfo(req,res);
 }
 
 function getPostsWithTag(req,res){
