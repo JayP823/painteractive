@@ -4,7 +4,7 @@ import Profile from './components/Profile.js';
 import Authenticator from "./components/Authenticator";
 import React, {useState} from "react";
 import {BrowserRouter, Switch, Route, Redirect, NavLink} from 'react-router-dom';
-import {AiOutlinePlus} from 'react-icons/ai'
+import {AiOutlinePlus} from 'react-icons/ai';
 import logo from './images/logo.png';
 import Inbox from "./components/Inbox";
 import SearchModal from "./components/SearchModal";
@@ -94,7 +94,7 @@ function App() {
                     <section className='flex-body'>
                         <Switch>
                             <Route exact path={"/"}><Feed/></Route>
-                            <Route path={"/profile"}><Profile/></Route>
+                            <Route path={"/profile"}><Profile user={user}/></Route>
                             <Route path={"/search"}><Search/></Route>
                             <Route path={"/messages"}><Inbox/></Route>
                             <Route path={"/gallery"}><Gallery/></Route>

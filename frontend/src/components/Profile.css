@@ -1,0 +1,120 @@
+.flex-container {
+    display: flex;
+}
+
+.profile-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-background {
+    height: 18vh;
+    background-color: white;
+}
+
+.header-bars {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-bars section, .profile-background {
+    border-bottom: 2px solid black;
+    box-sizing: border-box;
+}
+
+.header-bar-1 {
+    width: 85%;
+    height: 8vh;
+    display: flex;
+    justify-content: space-around;
+}
+
+.header-bar-2 {
+    width: 75%;
+    height: 6vh;
+    display: flex;
+    justify-content: space-between;
+    background-color: aquamarine;
+}
+
+.user-data {
+    width: 20%;
+    background-color: aqua;
+}
+
+.bio-container {
+    width: 45%;
+    padding: 1em 0;
+    background-color: aqua;
+}
+
+.interact-buttons-container {
+    width: 24%;
+    padding: 1em;
+    display: flex;
+}
+
+.interact-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    background-color: #6746a0;
+    transition: 0.2s;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+
+.interact-button:hover {
+    cursor: pointer;
+    background-color: #2e1854;
+}
+
+.message-button {
+    margin-right: 20px;
+}
+
+.follow-counts {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.follow-counts span {
+    font-size: 18px;
+}
+
+.profile-options {
+    width: 60%;
+    height: 100%;
+    padding-left: 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profile-options li {
+    display: block;
+    margin: 1em;
+}
+
+.profile-button {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    background-color: #8e74c0;
+}
+
+.profile-button:hover {
+    cursor: pointer;
+}
+
+.profile-button:disabled {
+    background-color: #3c066f;
+}
