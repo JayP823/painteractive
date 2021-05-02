@@ -3,6 +3,7 @@ import React, {Component, useState} from 'react';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai'
 import {IconContext} from 'react-icons'
 import image from '../images/img.png';
+import Tag from "./Tag";
 let tags = ['tag1', 'tag2', 'tag3'];
 let likedCount = 0;
 let repostCount = 0;
@@ -16,13 +17,15 @@ function Post () {
                     <img className='image' src={image} alt='post image'/>
                 </section>
                 <section className='details'>
-                    <p className='description'>desc</p>
-                    <p className='user'>user name</p>
+                    <div className='description'>
+                        <p className={'desc-body'}>descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription</p>
+                    </div>
+                    <div className='user'>user name</div>
                 </section>
             </div>
             <div className='tags'>
                 <ul className='tag-list'>
-                    {tags.map(tag => {return <Tag tagName={tag}/>})}
+                    {tags.map(tag => {return <Tag highlighted={false} tagName={tag}/>})}
                 </ul>
                 <section className='interaction-list'>
                     <div className='like-button'>
@@ -34,14 +37,6 @@ function Post () {
                 </section>
             </div>
         </div>
-    )
-}
-
-function Tag (props) {
-    return (
-        <li>
-            <span className='tag-text'>{props.tagName}</span>
-        </li>
     )
 }
 
@@ -57,8 +52,6 @@ class LikeButton extends Component {
     };
 
     render () {
-        //const heart = this.state.liked ? <AiFillHeart onClick={this.like()}/> : <AiOutlineHeart onClick={this.like()}/>;
-
         return(
             <div onClick={this.like}>
                 {this.state.liked === true ? (

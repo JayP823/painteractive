@@ -19,26 +19,41 @@
     flex-basis: 200px;
     flex-grow: 4;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 10px;
     background-color: #ece8f7;
 }
 
 .image {
     margin: auto;
+    flex-grow: 0;
 }
 
 .details {
     flex-grow: 1;
     display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .description {
     flex-grow: 7;
-    padding-left: 7%;
+    width: 65%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.desc-body {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .user {
     flex-grow: 3;
+    min-width: 30%;
 }
 
 .tags {
@@ -58,19 +73,6 @@
     justify-content: space-around;
     border-right: 2px solid black;
     box-sizing: border-box;
-}
-
-.tag-list li {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border: 2px solid black;
-    box-sizing: border-box;
-    height: 100%;
-    flex-basis: 30%;
-    background-color: #674ea7;
-    color: white;
 }
 
 .interaction-list {

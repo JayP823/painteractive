@@ -38,8 +38,8 @@ function Authenticator (props) {
 
     props.authModalRef(openModal)
 
-    const invokeLogIn = () => {
-        props.logIn();
+    const invokeLogIn = (user) => {
+        props.logIn(user);
         closeModal();
     }
 
@@ -51,16 +51,15 @@ function Authenticator (props) {
                     <button onClick={leaveRegistration}>Go Back</button>
                 </div>
                 : <div>
-                    <Login/>
+                    <Login invokeLogIn={invokeLogIn}/>
                     <button onClick={enterRegistration}>Register Here</button>
                 </div>}
-            <button onClick={invokeLogIn}>Special Login :)</button>
             <button onClick={closeModal}>close</button>
         </Modal>
     )
 }
 
-function Login () {
+function Login (props) {
     const username = useFormInput('');
     const password = useFormInput('');
     const [error, setError] = useState(null);
@@ -71,6 +70,7 @@ function Login () {
         setLoading(true);
         axios.post('http://localhost:2121/user/authenticate', { username: username.value, password: password.value }).then(response => {
             setLoading(false);
+            props.invokeLogIn(response.data);
             //TODO - setUserSession(response.data.token, response.data.user);
         }).catch(error => {
             setLoading(false);

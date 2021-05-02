@@ -3,15 +3,17 @@ import Home from './components/Home.js';
 import Profile from './components/Profile.js';
 import Authenticator from "./components/Authenticator";
 import React, {useState} from "react";
-import {BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, Redirect, NavLink} from 'react-router-dom';
 import logo from './images/logo.png';
 import Inbox from "./components/Inbox";
 import SearchModal from "./components/SearchModal";
 import Gallery from "./components/Gallery";
+import PageNotFound from "./components/PageNotFound";
+import Search from "./components/Search";
 
 function App() {
 
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState(localStorage.getItem('user'));
 
     let authModal;
     const authModalRef = (handleOpen) => {
@@ -31,12 +33,14 @@ function App() {
         if (searchModal) searchModal()
     }
 
-    const logIn = () => {
-        setLoggedIn(true);
+    const logIn = (user) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        setUser(user);
     }
 
     const logOut = () => {
-        setLoggedIn(false);
+        localStorage.removeItem('user');
+        setUser(null);
     }
 
     return (
@@ -53,19 +57,20 @@ function App() {
                                 <li style={{backgroundColor: '#dc7671'}}>
                                     <NavLink className='nav-list-link' to={"/"}>Home</NavLink>
                                 </li>
-                                {loggedIn && <li style={{backgroundColor: '#deef7c'}}>
+                                {user && <li style={{backgroundColor: '#deef7c'}}>
                                     <NavLink className='nav-list-link' to={"/messages"}>Messages</NavLink>
                                 </li>}
                                 <li onClick={openSearchModal} style={{backgroundColor: '#a3ebc3'}}>
                                     Search
                                 </li>
-                                {loggedIn && <li style={{backgroundColor: '#5c51d6'}}>
+                                {user && <li style={{backgroundColor: '#5c51d6'}}>
                                     <NavLink className='nav-list-link' to={"/gallery"}>Gallery</NavLink>
                                 </li>}
-                                {!loggedIn && <li onClick={openAuthModal} style={{backgroundColor: '#dc84e6'}}>
+                                {(user === null) ? <li onClick={openAuthModal} style={{backgroundColor: '#dc84e6'}}>
                                     Login/Register
-                                </li>}
-                                {loggedIn && <li className='profile' style={{backgroundColor: '#dc84e6'}}>
+                                </li> : <li onClick={logOut} style={{backgroundColor: '#dc84e6'}}>
+                                        Log Out</li>}
+                                {user && <li className='profile' style={{backgroundColor: '#dc84e6'}}>
                                     <NavLink className='nav-list-link' to={"/profile"}>Profile</NavLink>
                                 </li>}
                             </ul>
@@ -76,8 +81,11 @@ function App() {
                         <Switch>
                             <Route exact path={"/"}><Home/></Route>
                             <Route path={"/profile"}><Profile/></Route>
+                            <Route path={"/search"}><Search/></Route>
                             <Route path={"/messages"}><Inbox/></Route>
                             <Route path={"/gallery"}><Gallery/></Route>
+                            <Route path="/404"><PageNotFound/></Route>
+                            <Redirect from='*' to='/404' />
                         </Switch>
                     </section>
                 </div>
