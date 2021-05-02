@@ -7,7 +7,8 @@ module.exports = {
     getSomePostInfo,
     getPostsWithTag,
     addTag,
-    deleteTag
+    deleteTag,
+    like
 }
 
 var func = require('../_helpers/database');
@@ -24,7 +25,7 @@ async function createPost(req, name) {
         if(file){
             resp.image = file._id;
         }
-        resp.imageName = name;
+        resp.postID = name;
         resp.createdBy = req.user.sub;
         resp.description = req.body.desc;
         
@@ -37,11 +38,11 @@ async function createPost(req, name) {
 async function deletePost(name) {
     console.log(name);
     await gfs.files.remove({filename: name});
-    return await Post.deleteOne({imageName: name});
+    return await Post.deleteOne({postID: name});
 }
 
 async function getPostInfo(req, res){
-    Post.findOne({imageName: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.findOne({postID: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
@@ -80,22 +81,44 @@ async function getPostsWithTag(req, res){
 }
 
 async function addTag(req, res){
-    Post.findOne({imageName: req.body.imageName}).then(post => {
-        let tags = post.tags.concat(req.body.tags.split(', '));
+    Post.findOne({postID: req.body.postID}).then(post => {
+        try {
+            if(post.tags.length >= 3){
+                throw "Max tags reached."
+            }
+            let tags = post.tags.concat(req.body.tags.split(', '));
+            tags = [...new Set(tags)];
+            Post.updateOne({postID: req.body.postID}, {tags: tags}).then((post) => {
+                res.json(post);
+            });
+        } catch (e){
+            res.json(e)
+        }
+        
+       
+       
+    });
+}
+
+async function deleteTag(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        let tags = post.tags.filter(tag => !(req.body.tags.split(', ').includes(tag)));
+        console.log(tags);
         tags = [...new Set(tags)];
-        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
+        Post.updateOne({postID: req.body.postID}, {tags: tags}).then((post) => {
             res.json(post);
         });
     });
 }
 
-async function deleteTag(req, res){
-    Post.findOne({imageName: req.body.imageName}).then(post => {
-        let tags = post.tags.filter(tag => !(req.body.tags.split(', ').includes(tag)));
-        console.log(tags);
-        tags = [...new Set(tags)];
-        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
-            res.json(post);
+async function like(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        let liked = post.liked.concat(req.user.sub);
+        console.log(liked)
+        liked = [...new Set(liked)];
+        console.log(liked)
+        Post.updateOne({postID: req.body.postID}, {liked: liked}).then((post) => {
+           res.json(post);
         });
     });
 }
