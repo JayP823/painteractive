@@ -46,7 +46,11 @@ function PostModal (props) {
     }
 
     const submit = () => {
-
+        const newPost = new FormData();
+        newPost.append("file", image);
+        newPost.append("desc", textDescription.value);
+        newPost.append("tags", tags.join(", "));
+        axios.post(`/post/new`, newPost).then()
     }
 
     const onDrop = (acceptedFiles) => {

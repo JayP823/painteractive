@@ -9,6 +9,7 @@ const dotenv = require('dotenv').config();
 function Authenticator (props) {
     const [isOpen, setIsOpen] = useState(false);
     const [registering, setRegistering] = useState(false);
+    //const [token, setToken] = useState(storedJwt || null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -59,7 +60,7 @@ function Login (props) {
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-        axios.post(`http://${process.env.REACT_APP_HOST}/user/authenticate`, { username: username.value, password: password.value }).then(response => {
+        axios.post(`/user/authenticate`, { username: username.value, password: password.value }).then(response => {
             setLoading(false);
             props.invokeLogIn(response.data);
             //TODO - setUserSession(response.data.token, response.data.user);
@@ -100,7 +101,7 @@ function Register () {
         // TODO - Check fields for validity
         setError(null);
         setLoading(true);
-        axios.post(`http://${process.env.REACT_APP_HOST}:2121/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
+        axios.post(`/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
             setLoading(false);
             console.log("gaming");
             //TODO - setUserSession(response.data.token, response.data.user);

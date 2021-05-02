@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const http = require('http')
 const mongoose = require('mongoose');
-
+const cookieParser = require('cookie-parser')
 
 const jwt = require('./_helpers/jwt');
 
@@ -14,6 +14,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: false, limit: '1mb'}));
 app.use(bodyParser.json({limit: '1mb'}));
 
+app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 

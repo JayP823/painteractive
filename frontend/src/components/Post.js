@@ -10,21 +10,21 @@ function Post (props) {
     const [liked, setLiked] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const post = props.post;
-
+    tags = props.post.tags;
     return (
         <div className='content-wrapper'>
 
             <div className='content'>
                 {post.hasOwnProperty('image') && <section className='image-container'>
                     <img className='image'
-                         src={`http://${process.env.REACT_APP_HOST}:2121/post/show/${post.image.filename}`}
+                         src={`/post/show/${post.image.filename}`}
                          alt='post image'/>
                 </section>}
                 <section className='details'>
                     <div className='description'>
                         <p className={'desc-body'}>{post.description}</p>
                     </div>
-                    <div className='user'>user name</div>
+                    <div className='user'>{post.createdBy.username}</div>
                 </section>
             </div>
             <div className='tags'>
