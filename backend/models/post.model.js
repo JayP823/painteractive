@@ -6,8 +6,10 @@ const schema = new Schema({
     createdBy: {type: Schema.Types.ObjectId, ref: 'User'},
     createdDate: {type: Date, default: Date.now},
     description: {type: String},
-    imageName: {type: String},
+    postID: {type: String},
     image: {type: Schema.Types.Object, ref: 'File'},
+    liked: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    reposted: [{type: Schema.Types.ObjectId, ref: 'User'}],
     tags: [{type: String}]
 })
 

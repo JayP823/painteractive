@@ -1,13 +1,31 @@
 module.exports = {
     createPost,
+    deletePost,
     getPostInfo,
     showImage,
     getAllPostInfo,
     getSomePostInfo,
     getPostsWithTag,
     addTag,
-    deleteTag
+    deleteTag,
+    like,
+    repost
 }
+
+const distinct = (value, index, self) => {
+    return self.indexOf(value) === index;
+}
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
 
 var func = require('../_helpers/database');
 let gfs, conn, Post;
@@ -17,10 +35,13 @@ func.then((gfsConn) => {
     Post = gfsConn.Post;
 });
 
-async function createPost(req, file) {
-    await gfs.files.findOne({filename: file}, (err, file) =>{
-        resp.image = file._id;
-        resp.imageName = file.filename;
+async function createPost(req, name) {
+    let resp = {};
+    await gfs.files.findOne({filename: name}, (err, file) =>{
+        if(file){
+            resp.image = file._id;
+        }
+        resp.postID = name;
         resp.createdBy = req.user.sub;
         resp.description = req.body.desc;
         
@@ -28,11 +49,16 @@ async function createPost(req, file) {
         const post = new Post(resp);
         post.save();
     });
+}
 
+async function deletePost(name) {
+    console.log(name);
+    await gfs.files.remove({filename: name});
+    return await Post.deleteOne({postID: name});
 }
 
 async function getPostInfo(req, res){
-    Post.findOne({imageName: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.findOne({postID: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
@@ -71,22 +97,64 @@ async function getPostsWithTag(req, res){
 }
 
 async function addTag(req, res){
-    Post.findOne({imageName: req.body.imageName}).then(post => {
-        let tags = post.tags.concat(req.body.tags.split(', '));
+    Post.findOne({postID: req.body.postID}).then(post => {
+        try {
+            if(post.tags.length >= 3){
+                throw "Max tags reached."
+            }
+            let tags = post.tags.concat(req.body.tags.split(', ')).filter(distinct);
+            console.log(tags);
+            tags = [...new Set(tags)];
+            Post.updateOne({postID: req.body.postID}, {tags: tags}).then((post) => {
+                res.json(post);
+            });
+        } catch (e){
+            res.json(e)
+        }
+    });
+}
+
+async function deleteTag(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        let tags = post.tags.filter(tag => !(req.body.tags.split(', ').includes(tag)));
+        console.log(tags);
         tags = [...new Set(tags)];
-        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
+        Post.updateOne({postID: req.body.postID}, {tags: tags}).then((post) => {
             res.json(post);
         });
     });
 }
 
-async function deleteTag(req, res){
-    Post.findOne({imageName: req.body.imageName}).then(post => {
-        let tags = post.tags.filter(tag => !(req.body.tags.split(', ').includes(tag)));
-        console.log(tags);
-        tags = [...new Set(tags)];
-        Post.updateOne({imageName: req.body.imageName}, {tags: tags}).then((post) => {
-            res.json(post);
-        });
+async function like(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        if(post.liked.includes(req.user.sub)){
+            post.liked.remove(req.user.sub);
+            Post.updateOne({postID: req.body.postID}, {liked: post.liked}).then((post) => {
+                res.json(post);
+            });
+        } else {
+            let liked = post.liked.concat(req.user.sub).filter(distinct);
+            liked = [...new Set(liked)];
+            Post.updateOne({postID: req.body.postID}, {liked: liked}).then((post) => {
+                res.json(post);
+            });
+        }
+    });
+}
+
+async function repost(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        if(post.reposted.includes(req.user.sub)){
+            post.reposted.remove(req.user.sub);
+            Post.updateOne({postID: req.body.postID}, {reposted: post.reposted}).then((post) => {
+                res.json(post);
+            });
+        } else {
+            let reposted = post.reposted.concat(req.user.sub).filter(distinct);
+            reposted = [...new Set(reposted)];
+            Post.updateOne({postID: req.body.postID}, {reposted: reposted}).then((post) => {
+                res.json(post);
+            });
+        }
     });
 }
