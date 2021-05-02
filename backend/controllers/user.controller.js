@@ -3,7 +3,8 @@ const userService = require('../services/user.service');
 module.exports = {
     register,
     authenticate,
-    update
+    update,
+    getUserPosts
 }
 
 function register(req, res, next) {
@@ -23,4 +24,9 @@ function update(req, res, next) {
     userService.updateUser(req.body, req.user.sub, res)
         .then()
         .catch(err => next(err));
+}
+
+function getUserPosts(req, res, next){
+    userService.getUserPosts(req.user.sub)
+    .then((posts) => res.json(posts));
 }

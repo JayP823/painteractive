@@ -6,13 +6,15 @@ module.exports = {
     getByUsername,
     register,
     authenticate,
-    updateUser
+    updateUser,
+    getUserPosts
 }
 
 var func = require('../_helpers/database');
-let User;
+let User, Post;
 func.then((gfsConn) => {
     User = gfsConn.User;
+    Post = gfsConn.Post;
 });
 
 async function getByUsername(username){
@@ -71,4 +73,8 @@ async function updateUser(userParam, userID, res){
     User.updateOne({_id: userID}, user).then((post) => {
         res.json(post);
     });
+}
+
+async function getUserPosts(user){
+    return await Post.find({$or: [{createdBy: user}, {reposted: user}]});
 }

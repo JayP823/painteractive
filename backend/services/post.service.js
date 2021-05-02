@@ -8,7 +8,8 @@ module.exports = {
     getPostsWithTag,
     addTag,
     deleteTag,
-    like
+    like,
+    repost
 }
 
 const distinct = (value, index, self) => {
@@ -135,6 +136,23 @@ async function like(req, res){
             let liked = post.liked.concat(req.user.sub).filter(distinct);
             liked = [...new Set(liked)];
             Post.updateOne({postID: req.body.postID}, {liked: liked}).then((post) => {
+                res.json(post);
+            });
+        }
+    });
+}
+
+async function repost(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        if(post.reposted.includes(req.user.sub)){
+            post.reposted.remove(req.user.sub);
+            Post.updateOne({postID: req.body.postID}, {reposted: post.reposted}).then((post) => {
+                res.json(post);
+            });
+        } else {
+            let reposted = post.reposted.concat(req.user.sub).filter(distinct);
+            reposted = [...new Set(reposted)];
+            Post.updateOne({postID: req.body.postID}, {reposted: reposted}).then((post) => {
                 res.json(post);
             });
         }

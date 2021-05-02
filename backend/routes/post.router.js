@@ -38,6 +38,7 @@ router.get('/tag/:tag', postController.getPostsWithTag);
 router.post('/addtag', postController.addTag);
 router.post('/deletetag', postController.deleteTag);
 router.post('/like', postController.like);
+router.post('/repost', postController.repost);
 
 
 module.exports = router;

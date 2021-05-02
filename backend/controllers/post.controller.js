@@ -12,7 +12,8 @@ module.exports = {
     getPostsWithTag,
     addTag,
     deleteTag,
-    like
+    like,
+    repost
 }
 
 function createPost(req, res, next){
@@ -73,4 +74,8 @@ function deleteTag(req, res){
 
 function like(req, res){
     postService.like(req, res);
+}
+
+function repost(req, res){
+    postService.repost(req, res);
 }
