@@ -11,6 +11,21 @@ module.exports = {
     like
 }
 
+const distinct = (value, index, self) => {
+    return self.indexOf(value) === index;
+}
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
 var func = require('../_helpers/database');
 let gfs, conn, Post;
 func.then((gfsConn) => {
@@ -86,7 +101,8 @@ async function addTag(req, res){
             if(post.tags.length >= 3){
                 throw "Max tags reached."
             }
-            let tags = post.tags.concat(req.body.tags.split(', '));
+            let tags = post.tags.concat(req.body.tags.split(', ')).filter(distinct);
+            console.log(tags);
             tags = [...new Set(tags)];
             Post.updateOne({postID: req.body.postID}, {tags: tags}).then((post) => {
                 res.json(post);
@@ -94,9 +110,6 @@ async function addTag(req, res){
         } catch (e){
             res.json(e)
         }
-        
-       
-       
     });
 }
 
@@ -113,12 +126,17 @@ async function deleteTag(req, res){
 
 async function like(req, res){
     Post.findOne({postID: req.body.postID}).then(post => {
-        let liked = post.liked.concat(req.user.sub);
-        console.log(liked)
-        liked = [...new Set(liked)];
-        console.log(liked)
-        Post.updateOne({postID: req.body.postID}, {liked: liked}).then((post) => {
-           res.json(post);
-        });
+        if(post.liked.includes(req.user.sub)){
+            post.liked.remove(req.user.sub);
+            Post.updateOne({postID: req.body.postID}, {liked: post.liked}).then((post) => {
+                res.json(post);
+            });
+        } else {
+            let liked = post.liked.concat(req.user.sub).filter(distinct);
+            liked = [...new Set(liked)];
+            Post.updateOne({postID: req.body.postID}, {liked: liked}).then((post) => {
+                res.json(post);
+            });
+        }
     });
 }

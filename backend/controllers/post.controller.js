@@ -11,7 +11,8 @@ module.exports = {
     getSomePostInfo,
     getPostsWithTag,
     addTag,
-    deleteTag
+    deleteTag,
+    like
 }
 
 function createPost(req, res, next){
@@ -30,6 +31,7 @@ function createPost(req, res, next){
         }   
     });
     func.then((name) => {
+        console.log(req.user);
         postService.createPost(req, name);
         //res.json({file: req.file});
         res.redirect('/')
@@ -67,4 +69,8 @@ function addTag(req, res){
 
 function deleteTag(req, res){
     postService.deleteTag(req, res);
+}
+
+function like(req, res){
+    postService.like(req, res);
 }
