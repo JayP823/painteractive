@@ -34,8 +34,8 @@ function createPost(req, res, next){
     func.then((name) => {
         console.log(req.user);
         postService.createPost(req, name);
-        //res.json({file: req.file});
-        res.redirect('/')
+        res.json({file: name});
+        //res.redirect('/')
     })
 }
 
