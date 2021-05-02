@@ -2,7 +2,6 @@ import './Authenticator.css'
 import React, {useState} from 'react';
 import Modal from 'react-modal';
 import axios from "axios";
-
 const dotenv = require('dotenv').config();
 
 const customModalStyles = {

@@ -2,7 +2,7 @@ import './Home.css'
 import Post from "./Post";
 import {useEffect, useState} from "react";
 import axios from "axios";
-
+const dotenv = require('dotenv').config();
 let posts = [];
 const PAGE_LOAD_SIZE = 12;
 
@@ -14,7 +14,15 @@ function Home () {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:2121/post/recommend/uid/${uid}/size/${recSize}`).then(response => {
+        let feedParams = {
+            limit: PAGE_LOAD_SIZE,
+            date: null
+        }
+
+        if (postData.length > 0) feedParams.date = postData[postData.length - 1].createdDate;
+
+        axios.get(`http://${process.env.HOST}:2121/post/feed`, {params: feedParams}).then(response => {
+            console.log(response.data);
             updatePosts(response.data);
             return response.data;
         }).catch(error => {
