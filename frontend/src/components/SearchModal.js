@@ -1,23 +1,13 @@
 import './SearchModal.css'
 import React, {useState} from 'react';
 import Modal from 'react-modal';
+import customModalStyles from "./CustomModalStyles";
 import axios from "axios";
-
-const customModalStyles = {
-    content: {
-        top            : '40%',
-        left           : '50%',
-        right          : 'auto',
-        bottom         : 'auto',
-        marginRight    : '-50%',
-        transform      : 'translate(-50%, -40%)',
-        backgroundColor: '#b4a7d6'
-    }
-}
+import UseFormInput from "./UseFormInput";
 
 function SearchModal (props) {
     const [isOpen, setIsOpen] = useState(false);
-    const query = useFormInput('');
+    const query = UseFormInput('');
 
     const openModal = () => {
         setIsOpen(true);
@@ -43,19 +33,6 @@ function SearchModal (props) {
             <button onClick={closeModal}>close</button>
         </Modal>
     )
-}
-
-const useFormInput = (initialValue) => {
-    const [value, setValue] = useState(initialValue);
-
-    const updateHandler = (e) => {
-        setValue(e.target.value);
-    }
-
-    return {
-        value: value,
-        update: updateHandler
-    }
 }
 
 export default SearchModal

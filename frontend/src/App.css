@@ -16,7 +16,10 @@
 }
 
 .flex-header {
-  flex-basis: 30vw;
+  flex-basis: 16vw;
+  padding: 10vh 7vw;
+  display: flex;
+  align-items: center;
 }
 
 .flex-body {
@@ -28,13 +31,30 @@
 .sidebar {
   height: 80vh;
   max-width: 12vw;
-  margin: 10vh auto;
   padding: 20px;
   background-color: #8e7cc3;
-  border: 4px solid black;
+  border: 3px solid black;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+}
+
+.make-post {
+  max-width: 4vw;
+  width: 4vw;
+  height: 4vw;
+  background-color: #8e7cc3;
+  border: 3px solid black;
+  border-left: none;
+  transition: 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.make-post:hover {
+  cursor: pointer;
+  background-color: #beb1e3;
 }
 
 Switch {

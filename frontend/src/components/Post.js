@@ -1,31 +1,35 @@
 import './Post.css'
 import React, {Component, useState} from 'react';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai'
-import {IconContext} from 'react-icons'
-import image from '../images/img.png';
+import {IconContext} from 'react-icons';
+import customModalStyles from "./CustomModalStyles";
 import Tag from "./Tag";
 let tags = ['tag1', 'tag2', 'tag3'];
-let likedCount = 0;
-let repostCount = 0;
-let commentCount = 0;
 
-function Post () {
+function Post (props) {
+    const [liked, setLiked] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const post = props.post;
+
     return (
         <div className='content-wrapper'>
+
             <div className='content'>
-                <section className='image-container'>
-                    <img className='image' src={image} alt='post image'/>
-                </section>
+                {post.hasOwnProperty('image') && <section className='image-container'>
+                    <img className='image'
+                         src={`http://${process.env.REACT_APP_HOST}:2121/post/show/${post.image.filename}`}
+                         alt='post image'/>
+                </section>}
                 <section className='details'>
                     <div className='description'>
-                        <p className={'desc-body'}>descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription</p>
+                        <p className={'desc-body'}>{post.description}</p>
                     </div>
                     <div className='user'>user name</div>
                 </section>
             </div>
             <div className='tags'>
                 <ul className='tag-list'>
-                    {tags.map(tag => {return <Tag highlighted={false} tagName={tag}/>})}
+                    {tags.map((tag, index) => {return <Tag highlighted={false} hasLink={true} tagName={tag} key={'post-' + props.index + '-' + index}/>})}
                 </ul>
                 <section className='interaction-list'>
                     <div className='like-button'>

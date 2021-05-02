@@ -2,19 +2,9 @@ import './Authenticator.css'
 import React, {useState} from 'react';
 import Modal from 'react-modal';
 import axios from "axios";
+import customModalStyles from "./CustomModalStyles";
+import UseFormInput from "./UseFormInput";
 const dotenv = require('dotenv').config();
-
-const customModalStyles = {
-    content: {
-        top            : '40%',
-        left           : '50%',
-        right          : 'auto',
-        bottom         : 'auto',
-        marginRight    : '-50%',
-        transform      : 'translate(-50%, -40%)',
-        backgroundColor: '#b4a7d6'
-    }
-}
 
 function Authenticator (props) {
     const [isOpen, setIsOpen] = useState(false);
@@ -61,15 +51,15 @@ function Authenticator (props) {
 }
 
 function Login (props) {
-    const username = useFormInput('');
-    const password = useFormInput('');
+    const username = UseFormInput('');
+    const password = UseFormInput('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-        axios.post(`http://${process.env.HOST}/user/authenticate`, { username: username.value, password: password.value }).then(response => {
+        axios.post(`http://${process.env.REACT_APP_HOST}/user/authenticate`, { username: username.value, password: password.value }).then(response => {
             setLoading(false);
             props.invokeLogIn(response.data);
             //TODO - setUserSession(response.data.token, response.data.user);
@@ -98,11 +88,11 @@ function Login (props) {
 }
 
 function Register () {
-    const username = useFormInput('');
-    const password = useFormInput('');
-    const email = useFormInput('');
-    const firstName = useFormInput('');
-    const lastName = useFormInput('');
+    const username = UseFormInput('');
+    const password = UseFormInput('');
+    const email = UseFormInput('');
+    const firstName = UseFormInput('');
+    const lastName = UseFormInput('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -110,7 +100,7 @@ function Register () {
         // TODO - Check fields for validity
         setError(null);
         setLoading(true);
-        axios.post(`http://${process.env.HOST}:2121/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
+        axios.post(`http://${process.env.REACT_APP_HOST}:2121/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
             setLoading(false);
             console.log("gaming");
             //TODO - setUserSession(response.data.token, response.data.user);
@@ -148,19 +138,6 @@ function Register () {
             <input type="button" value={loading ? 'Loading...' : 'Register'} onClick={handleRegister} disabled={loading} /><br />
         </div>
     )
-}
-
-const useFormInput = (initialValue) => {
-    const [value, setValue] = useState(initialValue);
-
-    const updateHandler = (e) => {
-        setValue(e.target.value);
-    }
-
-    return {
-        value: value,
-        update: updateHandler
-    }
 }
 
 export default Authenticator
