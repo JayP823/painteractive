@@ -23,7 +23,7 @@
           <% if(files){ %>
             <% files.slice().reverse().forEach(function(file) { %>
               <div class="card card-body mb-3">
-                  <img src="post/show/<%= file.image.filename %>" alt="" onclick="javascript:window.location='post/show/<%= file.image.filename %>';">
+                  <%if(file.image){%><img src="post/show/<%= file.image.filename %>" alt="" onclick="javascript:window.location='post/show/<%= file.image.filename %>';"><%}%>
                   <p><%=file.description%></p>
                   <p>Created by: <%=file.createdBy.username%> on <%=new Date(file.createdDate)%></p>
                   <p> Tags: 
@@ -31,6 +31,10 @@
                     <a href = "post/tag/<%= tag%>"><%=tag%></a><%if(index != file.tags.length-1){%>,<%}%>
                   <%})%>
                   </p>
+                  <form action="/post/delete" method="GET" >
+                    <input type="hidden" name="post" value="<%=file.imageName%>">
+                    <input type="submit" value="Delete" class="btn btn-primary btn-block"> < Doesn't work LOL
+                  </form>
               </div>
               <% }) %>
                 <% } else { %>

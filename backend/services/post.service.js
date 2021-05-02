@@ -1,5 +1,6 @@
 module.exports = {
     createPost,
+    deletePost,
     getPostInfo,
     showImage,
     getAllPostInfo,
@@ -17,11 +18,13 @@ func.then((gfsConn) => {
     Post = gfsConn.Post;
 });
 
-async function createPost(req, file) {
+async function createPost(req, name) {
     let resp = {};
-    await gfs.files.findOne({filename: file}, (err, file) =>{
-        resp.image = file._id;
-        resp.imageName = file.filename;
+    await gfs.files.findOne({filename: name}, (err, file) =>{
+        if(file){
+            resp.image = file._id;
+        }
+        resp.imageName = name;
         resp.createdBy = req.user.sub;
         resp.description = req.body.desc;
         
@@ -29,7 +32,12 @@ async function createPost(req, file) {
         const post = new Post(resp);
         post.save();
     });
+}
 
+async function deletePost(name) {
+    console.log(name);
+    await gfs.files.remove({filename: name});
+    return await Post.deleteOne({imageName: name});
 }
 
 async function getPostInfo(req, res){

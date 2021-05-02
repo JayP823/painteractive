@@ -1,8 +1,10 @@
 const { post } = require('../routes/post.router');
 const postService = require('../services/post.service');
+const crypto = require('crypto');
 
 module.exports = {
     createPost,
+    deletePost,
     getPost,
     showImage,
     getAllPostInfo,
@@ -12,10 +14,30 @@ module.exports = {
     deleteTag
 }
 
-function createPost(req, res, next){   
-    postService.createPost(req, req.file.filename);
-    //res.json({file: req.file});
-    res.redirect('/')
+function createPost(req, res, next){
+    let filename;
+    let func = new Promise((resolve, reject) =>{
+        if(!req.file){
+            crypto.randomBytes(16, (err, buf) => {
+                if(err){
+                    return reject(err);
+                }
+                filename = buf.toString('hex') + ".txt";
+                resolve(filename)
+            });
+        } else {
+            resolve(req.file.filename);
+        }   
+    });
+    func.then((name) => {
+        postService.createPost(req, name);
+        //res.json({file: req.file});
+        res.redirect('/')
+    })
+}
+
+function deletePost(req, res, next){
+    postService.deletePost(req.query.post).then(res.json("Post deleted."));
 }
 
 function getPost(req, res){

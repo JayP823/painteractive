@@ -29,6 +29,7 @@ const storage = new GridFsStorage({
 const upload = multer({storage})
 
 router.post('/new', upload.single('file'), postController.createPost);
+router.delete('/delete', postController.deletePost);
 router.get('/all', postController.getAllPostInfo)
 router.get('/feed', postController.getSomePostInfo)
 router.get('/:id', postController.getPost);
