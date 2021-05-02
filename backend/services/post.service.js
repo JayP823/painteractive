@@ -18,6 +18,7 @@ func.then((gfsConn) => {
 });
 
 async function createPost(req, file) {
+    let resp = {};
     await gfs.files.findOne({filename: file}, (err, file) =>{
         resp.image = file._id;
         resp.imageName = file.filename;
