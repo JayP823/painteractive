@@ -20,7 +20,7 @@ function Feed () {
 
         if (postData.length > 0) feedParams.date = postData[postData.length - 1].createdDate;
 
-        axios.get(`http://${process.env.REACT_APP_HOST}:2121/post/feed`, {params: feedParams}).then(response => {
+        axios.get(`/post/feed`, {params: feedParams}).then(response => {
             updatePosts(response.data.reverse());
             return response.data.reverse();
         }).catch(error => {
