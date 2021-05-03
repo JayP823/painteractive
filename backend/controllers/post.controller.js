@@ -13,7 +13,8 @@ module.exports = {
     addTag,
     deleteTag,
     like,
-    repost
+    repost,
+    gallery
 }
 
 function createPost(req, res, next){
@@ -77,5 +78,11 @@ function like(req, res){
 }
 
 function repost(req, res){
+    console.log(req.user);
     postService.repost(req, res);
+}
+
+function gallery(req, res){
+    console.log(req.user);
+    postService.gallery(req, res);
 }

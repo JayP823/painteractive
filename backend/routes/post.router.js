@@ -39,6 +39,7 @@ router.post('/addtag', postController.addTag);
 router.post('/deletetag', postController.deleteTag);
 router.post('/like', postController.like);
 router.post('/repost', postController.repost);
+router.post('/addtogallery', postController.gallery);
 
 
 module.exports = router;

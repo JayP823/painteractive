@@ -9,7 +9,8 @@ module.exports = {
     addTag,
     deleteTag,
     like,
-    repost
+    repost,
+    gallery
 }
 
 const distinct = (value, index, self) => {
@@ -33,6 +34,7 @@ func.then((gfsConn) => {
     gfs = gfsConn.gfs;
     conn = gfsConn.conn;
     Post = gfsConn.Post;
+    User = gfsConn.User;
 });
 
 async function createPost(req, name) {
@@ -74,7 +76,7 @@ async function getSomePostInfo(req, res){
         req.query.date = new Date();
     }
     let skipNum = req.query.page * 12;
-    Post.find({}).skip(skipNum).limit(parseInt(req.query.limit)).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.find({}).skip(skipNum).limit(12).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
@@ -158,4 +160,19 @@ async function repost(req, res){
             });
         }
     });
+}
+
+async function gallery(req, res){
+    User.findOne({_id: req.user.sub}).then(user => {
+        if(user.gallery.includes(req.body.postID)){
+            user.gallery.remove(req.body.postID);
+            User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
+            res.json("removed from gallery")
+        } else {
+            user.gallery.concat(req.body.postID).filter(distinct);
+            console.log(user.gallery)
+            User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
+            res.json("added to gallery")
+        }
+    })
 }

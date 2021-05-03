@@ -12,8 +12,7 @@ const schema = new Schema({
         bio: {type: String},
         following: [{type: Schema.Types.ObjectId, ref: 'User'}],
         followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
-        reposts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
-        gallery: [{type: Schema.Types.ObjectId, ref: 'Post'}],
+        gallery: [{type: String}],
         createdDate: { type: Date, default: Date.now }
     }
 );
