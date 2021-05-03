@@ -7,7 +7,7 @@ module.exports = jwt;
 function jwt(){
     const secret = config.secret;
     return new expressJwt({secret, getToken: req => req.cookies.token, isRevoked, algorithms: ['HS256']}).unless({
-        path: /^\/(post\/(?!(new|like|repost|addtogallery))(.*|show\/.*))|\/(user\/(register|authenticate))|\/login|\/$/
+        path: /^\/(post\/(?!(new|delete|addtag|deletetag|like|repost|addtogallery|addcomment))(.*|show\/.*))|\/(user\/(register|authenticate|posts\/.*|profile|search))|\/$/
     });
 }
 
