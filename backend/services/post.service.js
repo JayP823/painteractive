@@ -76,7 +76,7 @@ async function getSomePostInfo(req, res){
         req.query.date = new Date();
     }
     let skipNum = req.query.page * 12;
-    Post.find({}).skip(skipNum).limit(12).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.find({}).skip(skipNum).limit(12).sort({createdBy: -1}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }
