@@ -2,8 +2,9 @@ import './SearchModal.css'
 import React, {useState} from 'react';
 import Modal from 'react-modal';
 import customModalStyles from "./CustomModalStyles";
-import axios from "axios";
 import UseFormInput from "./UseFormInput";
+import {AiOutlineClose} from "react-icons/ai";
+import {NavLink} from "react-router-dom";
 
 function SearchModal (props) {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,20 +18,26 @@ function SearchModal (props) {
         setIsOpen(false);
     }
 
-    const search = () => {
-        // TODO - Make ajax call to the back end to get search results.
-    }
-
     props.searchModalRef(openModal);
 
     return (
         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customModalStyles} appElement={document.getElementById('root')}>
-            Search<br /><br />
-            <div>
-                <input type="text" onChange={query.update} placeholder="enter search query..."/>
+            <div className={'search-modal-flex'}>
+                <section className={'modal-header'}>
+                    <h2>search</h2>
+                    <div>
+                        <AiOutlineClose onClick={closeModal} size={'30px'}/>
+                    </div>
+                </section>
+                <section className={'search-modal-body'}>
+                    <input className={'search-text'} type="text" onChange={query.update} placeholder={'enter search query...'}/>
+                </section>
+                <section className={'search-modal-footer'}>
+                    <NavLink onClick={closeModal} className={'submit-button'} to={`/search?q=${query.value}`}>
+                        <h2>Search</h2>
+                    </NavLink>
+                </section>
             </div>
-            <button onClick={search}>search</button>
-            <button onClick={closeModal}>close</button>
         </Modal>
     )
 }

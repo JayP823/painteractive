@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineForm, AiOutlineUnorderedList} from 'react-icons/ai'
 import {FaThumbsUp} from "react-icons/fa";
 import {MdLocalMovies} from "react-icons/md";
+import axios from "axios";
 
 function Profile (props) {
     let currentUser = props.user;
@@ -21,8 +22,14 @@ function Profile (props) {
 
     const followUser = () => {
         setLoadingFollowing(true);
-        // TODO - Make an ajax call to follow the user
-        setLoadingFollowing(false);
+        axios.post(`/user/follow`, {username: username}).then(res => {
+            console.log('xd');
+            setFollowing(true);
+            setLoadingFollowing(false);
+        }).catch(e => {
+            console.log(e);
+            setLoadingFollowing(false);
+        })
     }
 
     const unfollowUser = () => {
@@ -36,7 +43,12 @@ function Profile (props) {
     }
 
     useEffect(() => {
-
+        axios.get(`/user/profile?username=${username}`).then(res => {
+            let userData = res.data[0];
+            console.log(userData);
+            if (currentUser && userData.followers.includes(currentUser.username)) setFollowing(true);
+            setProfileUser(res.data[0])
+        })
     }, [])
 
     useEffect(() => {
@@ -59,81 +71,98 @@ function Profile (props) {
     }, [currentFeed])
 
     return (
-        <div className={'flex-container'}>
-            <section className={'profile-header'}>
-                <section className={'profile-background'}>
+        <div className={'outer-container'}>
+            {profileUser && <div className={'flex-container'}>
+                <section className={'profile-header'}>
+                    <section className={'profile-background'}>
 
-                </section>
-                <section className={'header-bars'}>
-                    <section className={'header-bar-1'}>
-                        <div className={'user-data'}>
-                            <h3>User Name</h3>
-                        </div>
-                        <div className={'bio-container'}>
-                            <span className={'bio-text'}>BIO BIO BIO BIO BIO BIO BIO BIO</span>
-                            <div className={'bio-edit'}>
-
+                    </section>
+                    <section className={'header-bars'}>
+                        <section className={'header-bar-1'}>
+                            <div className={'user-data'}>
+                                <h3>User Name</h3>
                             </div>
-                        </div>
-                        <div className={'interact-buttons-container'}>
-                            <button className={'interact-button message-button'} onClick={messageUser}>
-                                <AiOutlineForm size={'60%'}/>
-                                <h2>message</h2>
-                            </button>
-                            {!following ? <button disabled={loadingFollowing} onClick={followUser} className={'interact-button'}>
-                                <AiOutlinePlusCircle size={'60%'}/>
-                                <h2>follow</h2  >
-                            </button>
-                            : <button disabled={loadingFollowing} onClick={unfollowUser} className={'interact-button'}>
-                                    <AiOutlineMinusCircle size={'60%'}/>
-                                    <h2>unfollow</h2>
-                                </button>
-                            }
-                        </div>
-                    </section>
-                    <section className={'header-bar-2'}>
-                        <div className={'follow-counts'}>
-                            <span>Following: n</span>
-                            <span>Followers: n</span>
-                        </div>
-                        <ul className={'profile-options'}>
-                            <li>
-                                <button className={'profile-button'} disabled={currentFeed === 'posts'} onClick={() => {changeFeed('posts')}}>
-                                    <AiOutlineForm size={'70%'}/>
-                                    <h2>posts</h2>
-                                </button>
-                            </li>
-                            <li>
-                                <button className={'profile-button'} disabled={currentFeed === 'likes'} onClick={() => {changeFeed('likes')}}>
-                                    <FaThumbsUp size={'70%'}/>
-                                    <h2>likes</h2>
-                                </button>
-                            </li>
-                            <li>
-                                <button className={'profile-button'} disabled={currentFeed === 'media'} onClick={() => {changeFeed('media')}}>
-                                    <MdLocalMovies size={'70%'}/>
-                                    <h2>media</h2>
-                                </button>
-                            </li>
-                            <li>
-                                <button className={'profile-button'} disabled={currentFeed === 'gallery'} onClick={() => {changeFeed('gallery')}}>
-                                    <AiOutlineUnorderedList size={'70%'}/>
-                                    <h2>gallery</h2>
-                                </button>
-                            </li>
-                            <li>
+                            <div className={'bio-container'}>
+                                <span className={'bio-text'}>BIO BIO BIO BIO BIO BIO BIO BIO</span>
+                                <div className={'bio-edit'}>
 
-                            </li>
-                        </ul>
+                                </div>
+                            </div>
+                            {currentUser && <div className={'interact-buttons-container'}>
+                                <button className={'interact-button message-button'} onClick={messageUser}>
+                                    <AiOutlineForm size={'60%'}/>
+                                    <h2>message</h2>
+                                </button>
+                                {!following ?
+                                    <button disabled={loadingFollowing} onClick={followUser}
+                                            className={'interact-button'}>
+                                        <AiOutlinePlusCircle size={'60%'}/>
+                                        <h2>follow</h2>
+                                    </button>
+                                    : <button disabled={loadingFollowing} onClick={unfollowUser}
+                                              className={'interact-button'}>
+                                        <AiOutlineMinusCircle size={'60%'}/>
+                                        <h2>unfollow</h2>
+                                    </button>
+                                }
+                            </div>}
+                        </section>
+                        <section className={'header-bar-2'}>
+                            <div className={'follow-counts'}>
+                                <span>Following: n</span>
+                                <span>Followers: n</span>
+                            </div>
+                            <ul className={'profile-options'}>
+                                <li>
+                                    <button className={'profile-button'} disabled={currentFeed === 'posts'}
+                                            onClick={() => {
+                                                changeFeed('posts')
+                                            }}>
+                                        <AiOutlineForm size={'70%'}/>
+                                        <h2>posts</h2>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className={'profile-button'} disabled={currentFeed === 'likes'}
+                                            onClick={() => {
+                                                changeFeed('likes')
+                                            }}>
+                                        <FaThumbsUp size={'70%'}/>
+                                        <h2>likes</h2>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className={'profile-button'} disabled={currentFeed === 'media'}
+                                            onClick={() => {
+                                                changeFeed('media')
+                                            }}>
+                                        <MdLocalMovies size={'70%'}/>
+                                        <h2>media</h2>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className={'profile-button'} disabled={currentFeed === 'gallery'}
+                                            onClick={() => {
+                                                changeFeed('gallery')
+                                            }}>
+                                        <AiOutlineUnorderedList size={'70%'}/>
+                                        <h2>gallery</h2>
+                                    </button>
+                                </li>
+                                <li>
+
+                                </li>
+                            </ul>
+                        </section>
                     </section>
                 </section>
-            </section>
-            <section className={'profile-feed'}>
-                {!loadingPosts &&
-                <div className={'feed'}>
+                <section className={'profile-feed'}>
+                    {!loadingPosts &&
+                    <div className={'feed'}>
 
-                </div>}
-            </section>
+                    </div>}
+                </section>
+            </div>}
         </div>
     )
 }

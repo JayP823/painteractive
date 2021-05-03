@@ -7,8 +7,12 @@ function Feed (props) {
     const [postData, setPostData] = useState([]);
     let user = props.user;
 
-    let updatePosts = (newPosts) => {
-        setPostData(postData.concat(newPosts));
+    let updatePosts = (newPosts, replace) => {
+        if (replace) {
+            setPostData(newPosts);
+        } else {
+            setPostData(postData.concat(newPosts));
+        }
     }
 
     props.feedDataRef(updatePosts);

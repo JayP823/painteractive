@@ -75,10 +75,10 @@ function App() {
     return (
         <div className='App'>
             {loaded && <div>
-                <Authenticator authModalRef={authModalRef} logIn={logIn}/>
-                <SearchModal searchModalRef={searchModalRef}/>
-                <PostModal postModalRef={postModalRef}/>
                 <BrowserRouter className='router'>
+                    <Authenticator authModalRef={authModalRef} logIn={logIn}/>
+                    <SearchModal searchModalRef={searchModalRef}/>
+                    <PostModal postModalRef={postModalRef}/>
                     <div className='flex-container'>
                         <section className='flex-header'>
                             <nav className='sidebar'>
