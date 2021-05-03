@@ -53,11 +53,9 @@ async function register(userParam, files){
     } else {
         file = files;
     }
-    userParam.profilePic = file.filename;
-    userParam.headerPic = file.filename;
- 
+    userParam.profilePic = file.avatar[0].filename;
+    userParam.headerPic = file.header[0].filename;
     const user = new User(userParam);
-
     if(userParam.password){
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
