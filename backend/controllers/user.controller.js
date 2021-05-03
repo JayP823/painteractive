@@ -78,5 +78,7 @@ function follow(req, res, next){
 }
 
 function getUser(req, res, next){
-    userService.getByUsername(req.query.username);
+    userService.getByUsername(req.query.username).then((user) => {
+        res.json(user);
+    });
 }
