@@ -12,6 +12,8 @@ import Gallery from "./components/Gallery";
 import PageNotFound from "./components/PageNotFound";
 import Search from "./components/Search";
 import PostModal from "./components/PostModal";
+import axios from "axios";
+
 
 function App() {
 
@@ -25,7 +27,10 @@ function App() {
     }
 
     const logOut = () => {
-        document.cookie = 'token= ;expires=01-01-1970';
+        localStorage.removeItem('user');
+        axios.post(`/user/logout`).then((resp)=>{
+            console.log(resp)
+        });
         setUser(null);
     }
 

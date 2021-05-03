@@ -73,7 +73,8 @@ async function getSomePostInfo(req, res){
     if(!req.query.date){
         req.query.date = new Date();
     }
-    Post.find({createdDate: {$lt: req.query.date}}).limit(parseInt(req.query.limit)).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    let skipNum = req.query.page * 12;
+    Post.find({}).skip(skipNum).limit(parseInt(req.query.limit)).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }

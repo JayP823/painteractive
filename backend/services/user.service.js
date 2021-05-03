@@ -77,6 +77,7 @@ async function authenticate({username, password}){
     }
 }
 
+
 async function updateUser(userParam, userID, res){
     let user = await User.findOne({_id: userID});
     if(userParam.newUsername){
