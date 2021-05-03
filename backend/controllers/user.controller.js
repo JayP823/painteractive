@@ -3,6 +3,7 @@ const userService = require('../services/user.service');
 
 module.exports = {
     register,
+    logout,
     authenticate,
     update,
     getUserPosts,
@@ -21,7 +22,7 @@ function authenticate(req, res, next) {
     userService.authenticate(req.body)
         .then((user) => {
             if(user){
-                res.cookie('token', user.token, {httpOnly: true})
+                res.cookie('token', user.token, {maxAge: 900000, httpOnly: true})
                 res.json(user);
             } else {
                 res.status(400).json({message: 'Username or password is incorrect'});
@@ -29,6 +30,11 @@ function authenticate(req, res, next) {
         })
         
         .catch(err => next(err));
+}
+
+function logout(req, res, next){
+    res.cookie('token', 'none', {maxAge: 900000, httpOnly: true});
+    res.status(200).json({ success: true, message: 'User logged out successfully' })
 }
 
 function update(req, res, next) {

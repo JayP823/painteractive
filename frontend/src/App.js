@@ -12,6 +12,8 @@ import Gallery from "./components/Gallery";
 import PageNotFound from "./components/PageNotFound";
 import Search from "./components/Search";
 import PostModal from "./components/PostModal";
+import axios from "axios";
+
 
 function App() {
 
@@ -24,6 +26,9 @@ function App() {
 
     const logOut = () => {
         localStorage.removeItem('user');
+        axios.post(`/user/logout`).then((resp)=>{
+            console.log(resp)
+        });
         setUser(null);
     }
 
