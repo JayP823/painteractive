@@ -41,8 +41,18 @@ function PostModal (props) {
     }
 
     const addTag = () => {
-        let newTags = tags;
-        newTags.push(currentTagField.value);
+        if (currentTagField.value !== '' && !tags.includes(currentTagField.value)) {
+            let newTags = [];
+            newTags = newTags.concat(tags);
+            newTags.push(currentTagField.value);
+            setTags(newTags);
+        }
+    }
+
+    const deleteTag = (tagToDelete) => {
+        let newTags = [];
+        newTags = newTags.concat(tags);
+        newTags = newTags.filter(e => e !== tagToDelete);
         setTags(newTags);
     }
 
@@ -98,7 +108,7 @@ function PostModal (props) {
                         <h3>add tags ({tags.length}/3)</h3>
                         <div className={'tag-selector'}>
                             {tags.map((tag, index) => {
-                                return <Tag tagName={tag} hasLink={false} highlighted={false} key={'tag-' + index}/>
+                                return <Tag tagName={tag} deletable={deleteTag} hasLink={false} highlighted={false} key={'tag-' + index}/>
                             })}
                             {(tags.length < 3) && <div className={'tag-add-module'}>
                                 <input id={'tag-text-field'} type="text" onChange={currentTagField.update} placeholder="enter tag"/>

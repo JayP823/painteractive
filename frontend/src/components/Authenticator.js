@@ -4,6 +4,9 @@ import Modal from 'react-modal';
 import axios from "axios";
 import customModalStyles from "./CustomModalStyles";
 import UseFormInput from "./UseFormInput";
+import {AiOutlineClose} from "react-icons/ai";
+import {RiArrowGoBackLine} from "react-icons/ri";
+import {BsPlusSquare} from "react-icons/bs";
 const dotenv = require('dotenv').config();
 
 function Authenticator (props) {
@@ -37,16 +40,18 @@ function Authenticator (props) {
 
     return (
         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customModalStyles} appElement={document.getElementById('root')}>
-            {registering ?
-                <div>
-                    <Register/>
-                    <button onClick={leaveRegistration}>Go Back</button>
-                </div>
-                : <div>
-                    <Login invokeLogIn={invokeLogIn}/>
-                    <button onClick={enterRegistration}>Register Here</button>
-                </div>}
-            <button onClick={closeModal}>close</button>
+            <div className={'auth-modal-flex'}>
+                <section className={'modal-header'}>
+                    <h2>{!registering ? 'Log In' : 'Register'}</h2>
+                    <div>
+                        {registering && <RiArrowGoBackLine onClick={leaveRegistration} size={'30px'}/>}
+                        <AiOutlineClose onClick={closeModal} size={'30px'}/>
+                    </div>
+                </section>
+                <section className={'auth-modal-body'}>
+                    {!registering ? <Login enterRegistration={enterRegistration} invokeLogIn={invokeLogIn}/> : <Register leaveRegistration={leaveRegistration}/>}
+                </section>
+            </div>
         </Modal>
     )
 }
@@ -63,7 +68,6 @@ function Login (props) {
         axios.post(`/user/authenticate`, { username: username.value, password: password.value }).then(response => {
             setLoading(false);
             props.invokeLogIn(response.data);
-            //TODO - setUserSession(response.data.token, response.data.user);
         }).catch(error => {
             setLoading(false);
             if (error.response.status === 401) setError(error.response.data.message);
@@ -73,22 +77,28 @@ function Login (props) {
 
     return (
         <div>
-            Login<br /><br />
-            <div>
+            <div className={'auth-text-container'}>
                 Username<br />
-                <input type="text" onChange={username.update}/>
+                <input className={'auth-text'} type="text" onChange={username.update} placeholder={'username'}/>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className={'auth-text-container'}>
                 Password<br />
-                <input type="password" onChange={password.update}/>
+                <input className={'auth-text'} type="password" onChange={password.update} placeholder={'password'}/>
             </div>
             {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
-            <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+            <section className={'auth-modal-footer'}>
+                <button className={'submit-button'} disabled={loading} onClick={handleLogin}>
+                    <h2>{loading ? 'Logging In...' : 'Log In'}</h2>
+                </button>
+                <button className={'submit-button'} onClick={props.enterRegistration}>
+                    <h2>Register</h2>
+                </button>
+            </section>
         </div>
     )
 }
 
-function Register () {
+function Register (props) {
     const username = UseFormInput('');
     const password = UseFormInput('');
     const email = UseFormInput('');
@@ -98,13 +108,10 @@ function Register () {
     const [loading, setLoading] = useState(false);
 
     const handleRegister = () => {
-        // TODO - Check fields for validity
         setError(null);
         setLoading(true);
         axios.post(`/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
             setLoading(false);
-            console.log("gaming");
-            //TODO - setUserSession(response.data.token, response.data.user);
         }).catch(error => {
             setLoading(false);
             if (error.response.status === 401) setError(error.response.data.message);
@@ -114,29 +121,35 @@ function Register () {
 
     return (
         <div>
-            Register<br /><br />
-            <div>
+            <div className={'auth-text-container'}>
                 Username<br />
-                <input type="text" onChange={username.update}/>
+                <input className={'auth-text'} type="text" onChange={username.update} placeholder={'username'}/>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className={'auth-text-container'}>
                 Password<br />
-                <input type="password" onChange={password.update}/>
+                <input className={'auth-text'} type="password" onChange={password.update} placeholder={'password'}/>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className={'auth-text-container'}>
                 Email Address<br />
-                <input type="text" onChange={email.update}/>
+                <input className={'auth-text'} type="text" onChange={email.update} placeholder={'example@domain.com'}/>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className={'auth-text-container'}>
                 First Name<br />
-                <input type="text" onChange={firstName.update}/>
+                <input className={'auth-text'} type="text" onChange={firstName.update} placeholder={'john'}/>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className={'auth-text-container'}>
                 Last Name<br />
-                <input type="text" onChange={lastName.update}/>
+                <input className={'auth-text'} type="text" onChange={lastName.update} placeholder={'doe'}/>
             </div>
             {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
-            <input type="button" value={loading ? 'Loading...' : 'Register'} onClick={handleRegister} disabled={loading} /><br />
+            <section className={'auth-modal-footer'}>
+                <button className={'submit-button'} onClick={handleRegister}>
+                    <h2>{loading ? 'Registering...' : 'Register'}</h2>
+                </button>
+                <button className={'submit-button'} onClick={props.leaveRegistration}>
+                    <h2>Go Back</h2>
+                </button>
+            </section>
         </div>
     )
 }

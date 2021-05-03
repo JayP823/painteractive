@@ -10,12 +10,13 @@ function Post (props) {
     const [liked, setLiked] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const post = props.post;
+    console.log(post);
     tags = props.post.tags;
     return (
         <div className='content-wrapper'>
 
             <div className='content'>
-                {post.hasOwnProperty('image') && <section className='image-container'>
+                {(post.hasOwnProperty('image') && post.image !== null) && <section className='image-container'>
                     <img className='image'
                          src={`/post/show/${post.image.filename}`}
                          alt='post image'/>
@@ -29,7 +30,7 @@ function Post (props) {
             </div>
             <div className='tags'>
                 <ul className='tag-list'>
-                    {tags.map((tag, index) => {return <Tag highlighted={false} hasLink={true} tagName={tag} key={'post-' + props.index + '-' + index}/>})}
+                    {tags.map((tag, index) => {return <Tag highlighted={false} deletable={null} hasLink={true} tagName={tag} key={'post-' + props.index + '-' + index}/>})}
                 </ul>
                 <section className='interaction-list'>
                     <div className='like-button'>

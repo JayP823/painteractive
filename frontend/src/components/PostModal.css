@@ -11,7 +11,7 @@ AiOutlineClose:hover {
     flex-direction: column;
     width: 50vw;
     min-height: 500px;
-    height: 50vh;
+    height: 60vh;
     padding: 10px 15px;
 }
 
@@ -127,10 +127,14 @@ AiOutlineClose:hover {
     background-color: white;
 }
 
+.selected-tag {
+    margin-right: 10px;
+}
+
 .tag-add-module {
-    margin-left: 10px;
     display: flex;
     align-items: center;
+    border-left: 1px solid black;
 }
 
 #tag-text-field {
@@ -168,7 +172,7 @@ AiOutlineClose:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
+    border: 2px solid black;
     color: white;
     transition: 0.2s;
     background-color: #8e74c0;
