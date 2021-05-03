@@ -94,7 +94,8 @@ async function showImage(req, res){
 }
 
 async function getPostsWithTag(req, res){
-    Post.find({tags: req.params.tag}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    let skipNum = req.query.page * 12;
+    Post.find({tags: req.params.tag}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
         res.json(post);
     });
 }

@@ -124,15 +124,18 @@ async function updateUser(userParam, userID, files, res){
 }
 
 async function getUserPosts(user){
-    return await Post.find({$or: [{createdBy: user}, {reposted: user}]});
+    let skipNum = req.query.page * 12;
+    return await Post.find({$or: [{createdBy: user}, {reposted: user}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function getUserLikedPosts(user){
-    return await Post.find({liked: user});
+    let skipNum = req.query.page * 12;
+    return await Post.find({liked: user}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function getMedia(user){
-    return await Post.find({$and: [{$or: [{createdBy: user}, {reposted: user}]}, {image: {$exists: true}}]});
+    let skipNum = req.query.page * 12;
+    return await Post.find({$and: [{$or: [{createdBy: user}, {reposted: user}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function follow(req, res){
