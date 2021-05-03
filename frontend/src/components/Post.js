@@ -32,6 +32,7 @@ function Post (props) {
                         <p className={'desc-body'}>{post.description}</p>
                     </div>
                     <div className='user'>{post.createdBy.username}</div>
+                    <div className='user'>{post.createdDate}</div>
                 </section>
             </div>
             <div className='tags'>

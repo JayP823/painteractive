@@ -29,8 +29,8 @@ function Home (props) {
 
         axios.get(`/post/feed`, {params: feedParams}).then(response => {
             console.log(response);
-            feedDataInvoke(response.data.reverse());
-            return response.data.reverse();
+            feedDataInvoke(response.data);
+            return response.data;
         }).catch(error => {
             console.log(error);
         });
