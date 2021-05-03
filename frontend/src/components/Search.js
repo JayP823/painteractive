@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Feed from "./Feed";
 
-function Search () {
+function Search (props) {
     let user = props.user;
     const [pageNumber, setPageNumber] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -28,7 +28,6 @@ function Search () {
         }
 
         axios.get(`/post/feed`, {params: feedParams}).then(response => {
-            console.log(response);
             feedDataInvoke(response.data);
             return response.data;
         }).catch(error => {
