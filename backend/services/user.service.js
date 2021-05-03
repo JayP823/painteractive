@@ -41,24 +41,17 @@ async function register(userParam, files){
     } else {
         file = files;
     }
-    await gfs.files.findOne({filename: file.avatar[0].filename}, (err, file) => {
-        if(file){
-            userParam.profilePic = file.filename;
-        }
-    })
-    await gfs.files.findOne({filename: file.header[0].filename}, (err, file) => {
-        if(file){
-            userParam.headerPic = file.filename;
-        }
-        
-        const user = new User(userParam);
+    userParam.profilePic = file.filename;
+    userParam.headerPic = file.filename;
+ 
+    const user = new User(userParam);
 
-        if(userParam.password){
-            user.hash = bcrypt.hashSync(userParam.password, 10);
-        }
+    if(userParam.password){
+        user.hash = bcrypt.hashSync(userParam.password, 10);
+    }
 
-        user.save();
-    })
+    user.save();
+    
 
 
 }
@@ -85,7 +78,7 @@ async function verify(user){
 }
 
 
-async function updateUser(userParam, userID, res){
+async function updateUser(userParam, userID, files, res){
     let user = await User.findOne({_id: userID});
     if(userParam.newUsername){
         user.username = userParam.newUsername;
@@ -101,6 +94,14 @@ async function updateUser(userParam, userID, res){
     }
     if(userParam.newPassword){
         user.hash = bcrypt.hashSync(userParam.newPassword, 10);
+    }
+    if(files){
+        if(files.avatar){
+            user.profilePic = files.avatar[0].filename;
+        }
+        if(files.header){
+            user.headerPic = files.header[0].filename;
+        }
     }
     User.updateOne({_id: userID}, user).then((post) => {
         res.json(post);

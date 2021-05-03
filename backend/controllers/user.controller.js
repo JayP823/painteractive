@@ -44,7 +44,7 @@ function verify(req, res, next){
 }
 
 function update(req, res, next) {
-    userService.updateUser(req.body, req.user.sub, res)
+    userService.updateUser(req.body, req.user.sub, req.files, res)
         .then()
         .catch(err => next(err));
 }
