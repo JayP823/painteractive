@@ -31,13 +31,21 @@ async function register(userParam, files){
     else if (await User.findOne({email: userParam.email})){
         throw 'Email ' + userParam.email + ' is already taken';
     }
-   
-    await gfs.files.findOne({filename: files.avatar[0].filename}, (err, file) => {
+    let file = {};
+    if(!files){
+        file.avatar = [];
+        file.header = [];
+        file.avatar.push({filename: "fe68485d476e7df54110e4eb71530aa6.jpg"});
+        file.header.push({filename: "7a93a712e7048d843cb9818bda938b88.png"});
+    } else {
+        file = files;
+    }
+    await gfs.files.findOne({filename: file.avatar[0].filename}, (err, file) => {
         if(file){
             userParam.profilePic = file.filename;
         }
     })
-    await gfs.files.findOne({filename: files.header[0].filename}, (err, file) => {
+    await gfs.files.findOne({filename: file.header[0].filename}, (err, file) => {
         if(file){
             userParam.headerPic = file.filename;
         }
