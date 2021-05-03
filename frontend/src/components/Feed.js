@@ -20,7 +20,7 @@ function Feed (props) {
     return (
         <div className='feed-wrapper'>
             {postData.map((post, index) => {
-                if (post !== null) return <Post user={user} key={"banner" + index} post={post} index={index + 1}/>
+                if (post !== null) return <Post user={user} setQuery={props.setQuery} key={"banner" + index} post={post} index={index + 1}/>
             })}
         </div>
     )

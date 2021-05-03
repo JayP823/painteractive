@@ -23,7 +23,6 @@ function Profile (props) {
     const followUser = () => {
         setLoadingFollowing(true);
         axios.post(`/user/follow`, {username: username}).then(res => {
-            console.log('xd');
             setFollowing(true);
             setLoadingFollowing(false);
         }).catch(e => {
@@ -34,8 +33,13 @@ function Profile (props) {
 
     const unfollowUser = () => {
         setLoadingFollowing(true);
-        // TODO - Make an ajax call to unfollow the user
-        setLoadingFollowing(false);
+        axios.post(`/user/follow`, {username: username}).then(res => {
+            setFollowing(false);
+            setLoadingFollowing(false);
+        }).catch(e => {
+            console.log(e);
+            setLoadingFollowing(false);
+        })
     }
 
     const messageUser = () => {
@@ -46,7 +50,11 @@ function Profile (props) {
         axios.get(`/user/profile?username=${username}`).then(res => {
             let userData = res.data[0];
             console.log(userData);
-            if (currentUser && userData.followers.includes(currentUser.username)) setFollowing(true);
+            console.log(currentUser);
+            if (currentUser && userData.followers.includes(currentUser._id)) {
+                setFollowing(true);
+            };
+            setLoadingFollowing(false);
             setProfileUser(res.data[0])
         })
     }, [])
@@ -69,6 +77,8 @@ function Profile (props) {
         }
         setLoadingPosts(false);
     }, [currentFeed])
+
+    console.log(loadingFollowing);
 
     return (
         <div className={'outer-container'}>
