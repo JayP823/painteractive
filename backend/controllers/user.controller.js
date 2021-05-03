@@ -5,12 +5,14 @@ module.exports = {
     register,
     authenticate,
     update,
-    getUserPosts
+    getUserPosts,
+    getLikedUserPosts,
+    getMedia
 }
 
 function register(req, res, next) {
-    console.log(req.body);
-    userService.register(req.body)
+    //console.log(req.body);
+    userService.register(req.body, req.files)
         .then(() => res.json({}))
         .catch(err => next(err));
 }
@@ -37,5 +39,15 @@ function update(req, res, next) {
 
 function getUserPosts(req, res, next){
     userService.getUserPosts(req.user.sub)
+    .then((posts) => res.json(posts));
+}
+
+function getLikedUserPosts(req, res, next){
+    userService.getUserLikedPosts(req.user.sub)
+    .then((posts) => res.json(posts));
+}
+
+function getMedia(req, res, next){
+    userService.getMedia(req.user.sub)
     .then((posts) => res.json(posts));
 }

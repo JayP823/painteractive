@@ -7,12 +7,15 @@ module.exports = {
     register,
     authenticate,
     updateUser,
-    getUserPosts
+    getUserPosts,
+    getUserLikedPosts,
+    getMedia
 }
 
 var func = require('../_helpers/database');
 let User, Post;
 func.then((gfsConn) => {
+    gfs = gfsConn.gfs;
     User = gfsConn.User;
     Post = gfsConn.Post;
 });
@@ -21,21 +24,34 @@ async function getByUsername(username){
     return await User.find({username: username});
 }
 
-async function register(userParam){
+async function register(userParam, files){
     if(await User.findOne({username: userParam.username})){
         throw 'Username ' + userParam.username + ' is already taken';
     }
     else if (await User.findOne({email: userParam.email})){
         throw 'Email ' + userParam.email + ' is already taken';
     }
+   
+    await gfs.files.findOne({filename: files.avatar[0].filename}, (err, file) => {
+        if(file){
+            userParam.profilePic = file.filename;
+        }
+    })
+    await gfs.files.findOne({filename: files.header[0].filename}, (err, file) => {
+        if(file){
+            userParam.headerPic = file.filename;
+        }
+        
+        const user = new User(userParam);
 
-    const user = new User(userParam);
+        if(userParam.password){
+            user.hash = bcrypt.hashSync(userParam.password, 10);
+        }
 
-    if(userParam.password){
-        user.hash = bcrypt.hashSync(userParam.password, 10);
-    }
+        user.save();
+    })
 
-    await user.save();
+
 }
 
 async function authenticate({username, password}){
@@ -77,4 +93,12 @@ async function updateUser(userParam, userID, res){
 
 async function getUserPosts(user){
     return await Post.find({$or: [{createdBy: user}, {reposted: user}]});
+}
+
+async function getUserLikedPosts(user){
+    return await Post.find({liked: user});
+}
+
+async function getMedia(user){
+    return await Post.find({$and: [{$or: [{createdBy: user}, {reposted: user}]}, {image: {$exists: true}}]});
 }
