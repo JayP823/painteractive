@@ -68,7 +68,7 @@ function getMedia(req, res, next){
 }
 
 function profile(req, res, next){
-    userService.getByUsername(req.body.username)
+    userService.getByUsername(req.query.username)
     .then((posts) => res.json(posts));
 }
 
