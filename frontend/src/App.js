@@ -66,24 +66,24 @@ function App() {
                             <NavLink to={"/"}><img className='logo' src={logo} alt='painteractive logo'/></NavLink>
 
                             <ul className='nav-list'>
-                                <li style={{backgroundColor: '#dc7671'}}>
-                                    <NavLink className='nav-list-link' to={"/"}>Home</NavLink>
+                                <li className={'nav-red'}>
+                                    <NavLink className='nav-list-link' to={"/"}><h3>Home</h3></NavLink>
                                 </li>
-                                {user && <li style={{backgroundColor: '#deef7c'}}>
-                                    <NavLink className='nav-list-link' to={"/messages"}>Messages</NavLink>
+                                {user && <li className={'nav-yellow'}>
+                                    <NavLink className='nav-list-link' to={"/messages"}><h3>Messages</h3></NavLink>
                                 </li>}
-                                <li onClick={openSearchModal} style={{backgroundColor: '#a3ebc3'}}>
-                                    Search
+                                <li onClick={openSearchModal} className={'nav-green'}>
+                                    <h3>Search</h3>
                                 </li>
-                                {user && <li style={{backgroundColor: '#5c51d6'}}>
-                                    <NavLink className='nav-list-link' to={"/gallery"}>Gallery</NavLink>
+                                {user && <li className={'nav-blue'}>
+                                    <NavLink className='nav-list-link' to={"/gallery"}><h3>Gallery</h3></NavLink>
                                 </li>}
-                                {(user === null) ? <li onClick={openAuthModal} style={{backgroundColor: '#dc84e6'}}>
-                                    Login/Register
-                                </li> : <li onClick={logOut} style={{backgroundColor: '#dc84e6'}}>
-                                        Log Out</li>}
-                                {user && <li className='profile' style={{backgroundColor: '#dc84e6'}}>
-                                    <NavLink className='nav-list-link' to={"/profile"}>Profile</NavLink>
+                                {(user === null) ? <li onClick={openAuthModal} className={'nav-brown'}>
+                                    <h3>Login/Register</h3>
+                                </li> : <li onClick={logOut} className={'nav-brown'}>
+                                    <h3>Log Out</h3></li>}
+                                {user && <li className='profile nav-pink'>
+                                    <NavLink className='nav-list-link' to={"/profile"}><h3>Profile</h3></NavLink>
                                 </li>}
                             </ul>
                         </nav>

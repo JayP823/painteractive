@@ -3,7 +3,8 @@ import React, {useState} from 'react';
 import Modal from 'react-modal';
 import {useDropzone} from 'react-dropzone';
 import axios from "axios";
-import {AiOutlineUpload, AiOutlineClose, AiOutlineArrowRight} from "react-icons/ai";
+import {AiOutlineUpload, AiOutlineClose, AiOutlineArrowRight, AiOutlineUnorderedList} from "react-icons/ai";
+import {BsPlusSquare} from "react-icons/bs";
 import customModalStyles from "./CustomModalStyles";
 import UseFormInput from "./UseFormInput";
 import Tag from "./Tag";
@@ -46,11 +47,16 @@ function PostModal (props) {
     }
 
     const submit = () => {
+        setSubmitting(true);
         const newPost = new FormData();
         newPost.append("file", image);
         newPost.append("desc", textDescription.value);
         newPost.append("tags", tags.join(", "));
-        axios.post(`/post/new`, newPost).then()
+        axios.post(`/post/new`, newPost).then(res => {
+            setSubmitting(false);
+            alert('Posted successfully!');
+            closeModal();
+        })
     }
 
     const onDrop = (acceptedFiles) => {
@@ -104,7 +110,10 @@ function PostModal (props) {
                         </div>
                     </section>
                     <section className={'submit-container'}>
-                        <button onClick={submit}></button>
+                        <button className={'submit-button'} disabled={submitting} onClick={submit}>
+                            <BsPlusSquare size={'70%'}/>
+                            <h2>post</h2>
+                        </button>
                     </section>
                 </section>}
             </div>

@@ -43,7 +43,7 @@
   max-width: 4vw;
   width: 4vw;
   height: 4vw;
-  background-color: #8e7cc3;
+  background-color: #a594d6;
   border: 3px solid black;
   border-left: none;
   transition: 0.2s;
@@ -90,4 +90,58 @@ Switch {
 .profile {
   /* TODO - Make a circular profile container */
   flex-grow: 2;
+}
+
+.nav-red {
+  background-color: #fcafac;
+  transition: 0.4s
+}
+
+.nav-red:hover {
+  background-color: #db7e7b;
+}
+
+.nav-yellow {
+  background-color: #f3ffab;
+  transition: 0.4s
+}
+
+.nav-yellow:hover {
+ background-color: #dced77;
+}
+
+.nav-green {
+  background-color: #c7ffe0;
+  transition: 0.4s
+}
+
+.nav-green:hover {
+ background-color: #84f0b4;
+}
+
+.nav-blue {
+  background-color: #8a81eb;
+  transition: 0.4s
+}
+
+.nav-blue:hover {
+ background-color: #7368e3;
+}
+
+.nav-brown {
+  background-color: #f5ecce;
+  transition: 0.4s
+}
+
+.nav-brown:hover {
+ background-color: #f0db95;
+}
+
+.nav-pink {
+  background-color: #f7b5ff;
+  transition: 0.4s
+}
+
+.nav-pink:hover {
+  background-color: #e896f2;
 }

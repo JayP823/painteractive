@@ -155,3 +155,30 @@ AiOutlineClose:hover {
     cursor: pointer;
     background-color: #beb1e3;
 }
+
+.submit-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-button {
+    margin-right: 20px;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    transition: 0.2s;
+    background-color: #8e74c0;
+}
+
+.submit-button h2 {
+    margin-left: 10px;
+}
+
+.submit-button:hover {
+    cursor: pointer;
+    background-color: #573b8c;
+}
