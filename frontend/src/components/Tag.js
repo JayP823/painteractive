@@ -11,10 +11,10 @@ function Tag (props) {
 
     return (
         <li className={`tag-item ${highlighted && 'tag-highlighted'}`}>
-            {hasLink ? <NavLink className={`tag-text ${highlighted && 'tag-text-highlighted'}`}
+            {!deleteTag ? <NavLink className={`tag-text ${highlighted && 'tag-text-highlighted'}`}
                       to={`/search?t=${tagName}`}><span>{props.tagName}</span></NavLink>
-            : <div className={`tag-text ${highlighted && 'tag-text-highlighted'}`}>
-                    <span>{props.tagName}{deleteTag && <AiOutlineClose onClick={() => {deleteTag(tagName)}}/>}</span>
+            : <div onClick={() => {deleteTag(tagName)}} className={`tag-text ${highlighted && 'tag-text-highlighted'}`}>
+                    <span>{props.tagName}{deleteTag && <AiOutlineClose/>}</span>
             </div>
             }
         </li>

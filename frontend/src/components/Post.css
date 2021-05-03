@@ -69,10 +69,9 @@
 }
 
 .tag-list {
-    padding: 7px 0;
+    padding: 7px;
     flex-basis: 60%;
     display: flex;
-    justify-content: space-around;
     border-right: 2px solid black;
     box-sizing: border-box;
 }
@@ -81,6 +80,35 @@
     display: flex;
 }
 
-.like-icon {
-    color: red;
+.interaction-list div {
+    margin-right: 15px;
+}
+
+.interaction-container {
+    height: 100%;
+}
+
+.social-flex {
+    display: flex;
+    align-items: center;
+}
+
+.social-container {
+    height: 4em;
+    max-height: 5em;
+    display: flex;
+    align-items: center;
+}
+
+.social-counter {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.liked {
+    color: #fc4949;
+}
+
+.reposted {
+    color: green;
 }

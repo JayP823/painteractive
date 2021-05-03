@@ -6,13 +6,11 @@ import customModalStyles from "./CustomModalStyles";
 import UseFormInput from "./UseFormInput";
 import {AiOutlineClose} from "react-icons/ai";
 import {RiArrowGoBackLine} from "react-icons/ri";
-import {BsPlusSquare} from "react-icons/bs";
 const dotenv = require('dotenv').config();
 
 function Authenticator (props) {
     const [isOpen, setIsOpen] = useState(false);
     const [registering, setRegistering] = useState(false);
-    //const [token, setToken] = useState(storedJwt || null);
 
     const openModal = () => {
         setIsOpen(true);

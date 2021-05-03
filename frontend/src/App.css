@@ -80,11 +80,19 @@ Switch {
   align-content: center;
   flex-basis: 12%;
   margin-bottom: 20%;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
 .nav-list-link {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
 }
 
 .profile {

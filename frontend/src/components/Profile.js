@@ -1,11 +1,13 @@
 import './Profile.css'
 import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineForm, AiOutlineUnorderedList} from 'react-icons/ai'
 import {FaThumbsUp} from "react-icons/fa";
 import {MdLocalMovies} from "react-icons/md";
 
 function Profile (props) {
     let currentUser = props.user;
+    let username = useParams().username;
     let [profileUser, setProfileUser] = useState(null);
     // Allowed feeds: posts, likes, media, gallery
     let [currentFeed, setCurrentFeed] = useState('posts');
@@ -32,6 +34,10 @@ function Profile (props) {
     const messageUser = () => {
         // TODO - Send a message to the user
     }
+
+    useEffect(() => {
+
+    }, [])
 
     useEffect(() => {
         setLoadingPosts(true);
