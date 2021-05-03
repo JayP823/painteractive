@@ -9,7 +9,9 @@ module.exports = {
     update,
     getUserPosts,
     getLikedUserPosts,
-    getMedia
+    getMedia,
+    profile,
+    follow
 }
 
 function register(req, res, next) {
@@ -23,7 +25,7 @@ function authenticate(req, res, next) {
     userService.authenticate(req.body)
         .then((user) => {
             if(user){
-                res.cookie('token', user.token, {maxAge: 900000, httpOnly: true})
+                res.cookie('token', user.token, {maxAge: 60*60*24*365*10, httpOnly: true})
                 res.json(user);
             } else {
                 res.status(400).json({message: 'Username or password is incorrect'});
@@ -34,7 +36,7 @@ function authenticate(req, res, next) {
 }
 
 function logout(req, res, next){
-    res.cookie('token', '', {maxAge: 900000, httpOnly: true});
+    res.cookie('token', '', {maxAge: 0, httpOnly: true});
     res.status(200).json({ success: true, message: 'User logged out successfully' })
 }
 
@@ -44,7 +46,7 @@ function verify(req, res, next){
 }
 
 function update(req, res, next) {
-    userService.updateUser(req.body, req.user.sub, res)
+    userService.updateUser(req.body, req.user.sub, req.files, res)
         .then()
         .catch(err => next(err));
 }
@@ -62,4 +64,14 @@ function getLikedUserPosts(req, res, next){
 function getMedia(req, res, next){
     userService.getMedia(req.user.sub)
     .then((posts) => res.json(posts));
+}
+
+function profile(req, res, next){
+    userService.getByUsername(req.body.username)
+    .then((posts) => res.json(posts));
+}
+
+function follow(req, res, next){
+    userService.follow(req, res)
+    .then();
 }

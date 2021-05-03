@@ -10,8 +10,20 @@ module.exports = {
     updateUser,
     getUserPosts,
     getUserLikedPosts,
-    getMedia
+    getMedia,
+    follow
 }
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
 
 var func = require('../_helpers/database');
 let User, Post;
@@ -41,24 +53,17 @@ async function register(userParam, files){
     } else {
         file = files;
     }
-    await gfs.files.findOne({filename: file.avatar[0].filename}, (err, file) => {
-        if(file){
-            userParam.profilePic = file.filename;
-        }
-    })
-    await gfs.files.findOne({filename: file.header[0].filename}, (err, file) => {
-        if(file){
-            userParam.headerPic = file.filename;
-        }
-        
-        const user = new User(userParam);
+    userParam.profilePic = file.filename;
+    userParam.headerPic = file.filename;
+ 
+    const user = new User(userParam);
 
-        if(userParam.password){
-            user.hash = bcrypt.hashSync(userParam.password, 10);
-        }
+    if(userParam.password){
+        user.hash = bcrypt.hashSync(userParam.password, 10);
+    }
 
-        user.save();
-    })
+    user.save();
+    
 
 
 }
@@ -85,7 +90,7 @@ async function verify(user){
 }
 
 
-async function updateUser(userParam, userID, res){
+async function updateUser(userParam, userID, files, res){
     let user = await User.findOne({_id: userID});
     if(userParam.newUsername){
         user.username = userParam.newUsername;
@@ -102,6 +107,17 @@ async function updateUser(userParam, userID, res){
     if(userParam.newPassword){
         user.hash = bcrypt.hashSync(userParam.newPassword, 10);
     }
+    if(userParam.newBio){
+        user.bio = userParam.newBio;
+    }
+    if(files){
+        if(files.avatar){
+            user.profilePic = files.avatar[0].filename;
+        }
+        if(files.header){
+            user.headerPic = files.header[0].filename;
+        }
+    }
     User.updateOne({_id: userID}, user).then((post) => {
         res.json(post);
     });
@@ -117,4 +133,27 @@ async function getUserLikedPosts(user){
 
 async function getMedia(user){
     return await Post.find({$and: [{$or: [{createdBy: user}, {reposted: user}]}, {image: {$exists: true}}]});
+}
+
+async function follow(req, res){
+    let followingUser = await getByUsername(req.body.username);
+    User.findOne({_id: req.user.sub}).then(user => {
+        if(user.following.includes(followingUser[0]._id)){
+            user.following.remove(followingUser[0]._id);
+            followingUser[0].followers.remove(req.user.sub);
+            User.updateOne({_id: req.user.sub}, {following: user.following}).then(() => {
+                User.updateOne({_id: followingUser[0]._id}, {followers: followingUser[0].followers}).then(() => {
+                    res.json(req.body.username + " unfollowed!")
+                })
+            });
+        } else {
+            user.following.push(followingUser[0]._id);
+            followingUser[0].followers.push(req.user.sub);
+            User.updateOne({_id: req.user.sub}, {following: user.following}).then(() => {
+                User.updateOne({_id: followingUser[0]._id}, {followers: followingUser[0].followers}).then(() => {
+                    res.json(req.body.username + " followed!");
+                });
+            });
+        }
+    })
 }
