@@ -37,5 +37,7 @@ router.post('/update', upload.fields([{name: 'avatar', maxCount: 1}, {name: 'hea
 router.get('/posts', userController.getUserPosts);
 router.get('/posts/liked', userController.getLikedUserPosts);
 router.get('/posts/media', userController.getMedia);
+router.get('/profile/', userController.profile);
+router.post('/follow', userController.follow);
 
 module.exports = router;
