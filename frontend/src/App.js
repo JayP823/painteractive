@@ -2,7 +2,7 @@ import './App.css';
 import Feed from './components/Feed.js';
 import Profile from './components/Profile.js';
 import Authenticator from "./components/Authenticator";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BrowserRouter, Switch, Route, Redirect, NavLink} from 'react-router-dom';
 import {AiOutlinePlus} from 'react-icons/ai';
 import logo from './images/logo.png';
@@ -15,15 +15,17 @@ import PostModal from "./components/PostModal";
 
 function App() {
 
-    const [user, setUser] = useState(localStorage.getItem('user'));
+    const [user, setUser] = useState(null);
 
     const logIn = (user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+            setUser(user);
+        }
     }
 
     const logOut = () => {
-        localStorage.removeItem('user');
+        document.cookie = 'token= ;expires=01-01-1970';
         setUser(null);
     }
 
@@ -53,6 +55,10 @@ function App() {
     const openPostModal = () => {
         if (postModal) postModal()
     }
+
+    useEffect(() => {
+        logIn();
+    }, []);
 
     return (
         <div className='App'>
