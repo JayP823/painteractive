@@ -11,7 +11,8 @@ module.exports = {
     getLikedUserPosts,
     getMedia,
     profile,
-    follow
+    follow,
+    getUser
 }
 
 function register(req, res, next) {
@@ -74,4 +75,8 @@ function profile(req, res, next){
 function follow(req, res, next){
     userService.follow(req, res)
     .then();
+}
+
+function getUser(req, res, next){
+    userService.getByUsername(req.query.username);
 }

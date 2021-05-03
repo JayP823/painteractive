@@ -39,5 +39,6 @@ router.get('/posts/liked', userController.getLikedUserPosts);
 router.get('/posts/media', userController.getMedia);
 router.get('/profile/', userController.profile);
 router.post('/follow', userController.follow);
+router.get('/search', userController.getUser)
 
 module.exports = router;
