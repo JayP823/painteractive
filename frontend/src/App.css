@@ -42,10 +42,13 @@
 .make-post {
   max-width: 4vw;
   width: 4vw;
-  height: 4vw;
+  height: 10vw;
   background-color: #a594d6;
-  border: 3px solid black;
-  border-left: none;
+  border-top: 3px solid black;
+  border-left: 2px solid black;
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+  box-sizing: border-box;
   transition: 0.2s;
   display: flex;
   justify-content: center;
