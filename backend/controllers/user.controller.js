@@ -5,6 +5,7 @@ module.exports = {
     register,
     logout,
     authenticate,
+    verify,
     update,
     getUserPosts,
     getLikedUserPosts,
@@ -33,8 +34,13 @@ function authenticate(req, res, next) {
 }
 
 function logout(req, res, next){
-    res.cookie('token', 'none', {maxAge: 900000, httpOnly: true});
+    res.cookie('token', '', {maxAge: 900000, httpOnly: true});
     res.status(200).json({ success: true, message: 'User logged out successfully' })
+}
+
+function verify(req, res, next){
+    userService.verify(req.user.sub)
+    .then((resp) => res.json(resp));
 }
 
 function update(req, res, next) {

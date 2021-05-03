@@ -32,6 +32,7 @@ const upload = multer({storage})
 router.post('/register', upload.fields([{name: 'avatar', maxCount: 1}, {name: 'header', maxCount: 1}]), userController.register);
 router.post('/logout', userController.logout)
 router.post('/authenticate', upload.none(), userController.authenticate);
+router.post('/verify', userController.verify)
 router.post('/update', upload.none(), userController.update);
 router.get('/posts', userController.getUserPosts);
 router.get('/posts/liked', userController.getLikedUserPosts);

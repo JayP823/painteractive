@@ -6,6 +6,7 @@ module.exports = {
     getByUsername,
     register,
     authenticate,
+    verify,
     updateUser,
     getUserPosts,
     getUserLikedPosts,
@@ -75,6 +76,12 @@ async function authenticate({username, password}){
             token
         };
     }
+}
+
+async function verify(user){
+    let newUser = await User.findOne({_id: user});
+    const {hash, ...userWithoutHash} = newUser.toObject();
+    return {...userWithoutHash}
 }
 
 
