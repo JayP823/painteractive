@@ -14,7 +14,9 @@ module.exports = {
     deleteTag,
     like,
     repost,
-    gallery
+    gallery,
+    postComment,
+    getComments
 }
 
 function createPost(req, res, next){
@@ -85,4 +87,12 @@ function repost(req, res){
 function gallery(req, res){
     console.log(req.user);
     postService.gallery(req, res);
+}
+
+function postComment(req, res){
+    postService.postComment(req, res);
+}
+
+function getComments(req, res){
+    postService.getComments(req, res);
 }

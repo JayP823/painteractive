@@ -32,7 +32,7 @@ router.post('/new', upload.single('file'), postController.createPost);
 router.delete('/delete', postController.deletePost);
 router.get('/all', postController.getAllPostInfo)
 router.get('/feed', postController.getSomePostInfo)
-router.get('/:id', postController.getPost);
+router.get('/getcomments', postController.getComments);
 router.get('/show/:id', postController.showImage);
 router.get('/tag/:tag', postController.getPostsWithTag);
 router.post('/addtag', postController.addTag);
@@ -40,6 +40,8 @@ router.post('/deletetag', postController.deleteTag);
 router.post('/like', postController.like);
 router.post('/repost', postController.repost);
 router.post('/addtogallery', postController.gallery);
+router.post('/addcomment', postController.postComment);
+router.get('/:id', postController.getPost);
 
 
 module.exports = router;

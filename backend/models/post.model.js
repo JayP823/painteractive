@@ -8,7 +8,7 @@ const schema = new Schema({
     description: {type: String},
     postID: {type: String},
     image: {type: Schema.Types.Object, ref: 'File'},
-    comments: [{type: Schema.Types.ObjectId, ref: 'User'}, {type: String}],
+    comments: [{user: {type: Schema.Types.ObjectId, ref: 'User'}, comment: {type: String}}],
     liked: [{type: Schema.Types.ObjectId, ref: 'User'}],
     reposted: [{type: Schema.Types.ObjectId, ref: 'User'}],
     tags: [{type: String}]

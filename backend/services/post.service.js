@@ -10,7 +10,9 @@ module.exports = {
     deleteTag,
     like,
     repost,
-    gallery
+    gallery,
+    postComment,
+    getComments
 }
 
 const distinct = (value, index, self) => {
@@ -175,5 +177,25 @@ async function gallery(req, res){
             User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
             res.json("added to gallery")
         }
+    })
+}
+
+async function postComment(req, res){
+    Post.findOne({postID: req.body.postID}).then(post => {
+        let newComment = {user: req.user.sub, comment: req.body.comment}
+        console.log(newComment)
+        post.comments.push(newComment);
+        console.log(post.comments);
+        Post.updateOne({postID: req.body.postID}, {comments: post.comments}).then(() => {
+            res.json("Comment added to post!");
+        });
+    })
+}
+
+async function getComments(req, res){
+    console.log(1)
+    Post.findOne({postID: req.query.postID}).then(post => {
+        console.log(post)
+        res.json(post.comments);
     })
 }
