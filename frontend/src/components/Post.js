@@ -1,16 +1,15 @@
 import './Post.css'
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {AiOutlineHeart, AiFillHeart, AiOutlineRetweet} from 'react-icons/ai';
 import customModalStyles from "./CustomModalStyles";
 import Tag from "./Tag";
 import axios from "axios";
-let tags = ['tag1', 'tag2', 'tag3'];
 
 function Post (props) {
     let user = props.user;
     const [fullscreenOpen, setFullscreenOpen] = useState(false);
     const post = props.post;
-    tags = props.post.tags;
+    let tags = props.post.tags;
     let isLiked = false;
     let isReposted = false;
     if (user) {

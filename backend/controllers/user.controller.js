@@ -54,17 +54,17 @@ function update(req, res, next) {
 }
 
 function getUserPosts(req, res, next){
-    userService.getUserPosts(req.user.sub)
+    userService.getUserPosts(req)
     .then((posts) => res.json(posts));
 }
 
 function getLikedUserPosts(req, res, next){
-    userService.getUserLikedPosts(req.user.sub)
+    userService.getUserLikedPosts(req)
     .then((posts) => res.json(posts));
 }
 
 function getMedia(req, res, next){
-    userService.getMedia(req.user.sub)
+    userService.getMedia(req)
     .then((posts) => res.json(posts));
 }
 

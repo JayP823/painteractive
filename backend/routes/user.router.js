@@ -34,12 +34,12 @@ router.post('/logout', userController.logout)
 router.post('/authenticate', upload.none(), userController.authenticate);
 router.post('/verify', userController.verify)
 router.post('/update', upload.fields([{name: 'avatar', maxCount: 1}, {name: 'header', maxCount: 1}]), userController.update);
-router.get('/posts', userController.getUserPosts);
+router.get('/posts/posts', userController.getUserPosts);
 router.get('/posts/liked', userController.getLikedUserPosts);
 router.get('/posts/media', userController.getMedia);
+router.get('/posts/gallery', userController.gallery);
 router.get('/profile', userController.profile);
 router.post('/follow', userController.follow);
-router.get('/search', userController.getUser)
-router.get('/posts/gallery', userController.gallery)
+router.get('/search', userController.getUser);
 
 module.exports = router;

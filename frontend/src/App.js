@@ -6,13 +6,13 @@ import {BrowserRouter, Switch, Route, Redirect, NavLink} from 'react-router-dom'
 import {AiOutlinePlus} from 'react-icons/ai';
 import axios from "axios";
 import logo from './images/logo.png';
-import Inbox from "./components/Inbox";
 import SearchModal from "./components/SearchModal";
 import Gallery from "./components/Gallery";
 import PageNotFound from "./components/PageNotFound";
 import Search from "./components/Search";
 import PostModal from "./components/PostModal";
 import Home from "./components/Home";
+import AccountSettings from "./components/AccountSettings";
 
 
 function App() {
@@ -88,16 +88,13 @@ function App() {
                                     <li className={'nav-red'}>
                                         <NavLink className='nav-list-link' to={"/"}><h3>Home</h3></NavLink>
                                     </li>
-                                    {user && <li className={'nav-yellow'}>
-                                        <NavLink className='nav-list-link' to={"/messages"}><h3>Messages</h3></NavLink>
-                                    </li>}
-                                    <li onClick={openSearchModal} className={'nav-green'}>
+                                    <li onClick={openSearchModal} className={'nav-yellow'}>
                                         <h3 className={'nav-list-link'}>Search</h3>
                                     </li>
-                                    {user && <li className={'nav-blue'}>
+                                    {user && <li className={'nav-green'}>
                                         <NavLink className='nav-list-link' to={"/gallery"}><h3>Gallery</h3></NavLink>
                                     </li>}
-                                    {user && <li className='profile nav-brown'>
+                                    {user && <li className='profile nav-blue'>
                                         <NavLink className='nav-list-link' to={`/profile/${user.username}`}>
                                             <h3>{user.username}</h3></NavLink>
                                     </li>}
@@ -115,8 +112,8 @@ function App() {
                             <Switch>
                                 <Route exact path={"/"}><Home user={user}/></Route>
                                 <Route path={"/profile/:username"}><Profile user={user}/></Route>
+                                <Route path={"/accountsettings"}><AccountSettings user={user}/></Route>
                                 <Route path={"/search"}><Search user={user}/></Route>
-                                <Route path={"/messages"}><Inbox/></Route>
                                 <Route path={"/gallery"}><Gallery/></Route>
                                 <Route path="/404"><PageNotFound/></Route>
                                 <Redirect from='*' to='/404'/>

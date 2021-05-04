@@ -2,19 +2,35 @@
     width: 100%;
 }
 
-.flex-container {
-    display: flex;
-}
-
 .profile-header {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.profile-background {
+.profile-banner {
     height: 18vh;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.banner-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.profile-background {
+    height: 100%;
+    width: 100%;
     background-color: white;
+    background-position: center;
+    background-repeat: repeat-x;
+}
+
+.header-image {
+    max-height: 100%;
 }
 
 .header-bars {
@@ -40,18 +56,25 @@
     height: 6vh;
     display: flex;
     justify-content: space-between;
-    background-color: aquamarine;
+    background-color: #bcafe0;
 }
 
 .user-data {
     width: 20%;
-    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-image {
+    display: block;
+    margin: auto;
+    max-height: 100%;
 }
 
 .bio-container {
     width: 45%;
     padding: 1em 0;
-    background-color: aqua;
 }
 
 .interact-buttons-container {
@@ -61,14 +84,22 @@
 }
 
 .interact-button {
+    width: 14em;
+    height: 5.5em;
+    max-height: 6em;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    text-decoration: none;
     color: white;
     background-color: #6746a0;
     transition: 0.2s;
     border: 2px solid black;
     box-sizing: border-box;
+}
+
+.account-button {
+    height: 5em;
 }
 
 .interact-button:hover {
@@ -124,4 +155,9 @@
 
 .profile-button:disabled {
     background-color: #3c066f;
+}
+
+.profile-feed {
+    display: flex;
+    flex-direction: column;
 }
