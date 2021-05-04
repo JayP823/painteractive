@@ -84,7 +84,7 @@ function Profile (props) {
         let replace = feedParams.page === 0;
 
         axios.get(`/user/posts/${currentFeed}`, {params: feedParams}).then(response => {
-            console.log(response);
+            console.log(response.data);
             feedDataInvoke(response.data, replace);
             return response.data;
         }).catch(error => {

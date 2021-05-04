@@ -13,13 +13,14 @@ function Post (props) {
     let user = props.user;
     let setUser = props.setUser;
     let post = props.post;
+    let query = props.query;
     let tags = props.post.tags;
     let index = tags.indexOf('');
     if (index !== -1) tags.splice(index, 1);
     let isLiked = false;
     let isReposted = false;
     const [isGalleried, setIsGalleried] = useState(() => {
-        return !!(user && user.gallery.includes(post.postID));
+        return !!(user && user.gallery.includes(post._id));
     });
     if (user) {
         if (post.liked.includes(user._id)) isLiked = true;
@@ -31,9 +32,9 @@ function Post (props) {
     const [submittingComment, setSubmittingComment] = useState(false);
 
     const addToGallery = () => {
-        axios.post(`/post/addtogallery`, {postID: post.postID}).then(res => {
+        axios.post(`/post/addtogallery`, {_id: post._id}).then(res => {
             let newGallery = user.gallery;
-            newGallery.push(post.postID);
+            newGallery.push(post._id);
             let newUser = user;
             newUser.gallery = newGallery;
             setUser(newUser);
@@ -45,9 +46,9 @@ function Post (props) {
     }
 
     const removeFromGallery = () => {
-        axios.post(`/post/addtogallery`, {postID: post.postID}).then(res => {
+        axios.post(`/post/addtogallery`, {_id: post._id}).then(res => {
             let newGallery = user.gallery;
-            let index2 = user.gallery.indexOf(post.postID);
+            let index2 = user.gallery.indexOf(post._id);
             if (index2 !== -1) newGallery.splice(index, 1);
             let newUser = user;
             newUser.gallery = newGallery;
@@ -116,7 +117,7 @@ function Post (props) {
             <div className='tags'>
                 <ul className='tag-list'>
                     {tags.map((tag, index) => {
-                        return <Tag highlighted={false} setQuery={props.setQuery} deletable={null} hasLink={true}
+                        return <Tag highlighted={tag === query} setQuery={props.setQuery} deletable={null} hasLink={true}
                                     tagName={tag} key={'post-' + props.index + '-' + index}/>
                     })}
                 </ul>

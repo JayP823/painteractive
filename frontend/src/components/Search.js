@@ -5,6 +5,21 @@ import Feed from "./Feed";
 import UseFormInput from "./UseFormInput";
 import {NavLink} from "react-router-dom";
 
+const MONTHS = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december'
+]
+
 function Search (props) {
     let user = props.user;
     let setUser = props.setUser;
@@ -97,16 +112,18 @@ function Search (props) {
             <section className={'user-results'}>
                 {!loadingUser &&
                 <div className={'search-section-container'}>
-                    <h2 className={'search-header'}>user results for {query} ({userResponseLength})</h2>
+                    <h2 className={'search-header'}>user results for '{query}' ({userResponseLength})</h2>
                     <div className={'search-res-body'}>
                         {userData ?
-                            <div className={'user-results'}>
-                                <div className={'comment-wrapper'}>
-                                    <NavLink className={'comment-user'} to={'/'}>
+                            <div className={'user-res-wrapper'}>
+                                <div className={'user-res-container'}>
+                                    <NavLink className={'comment-user'} to={`/profile/${userData.username}`}>
                                         <img className={'profile-image'} src={`/post/show/${userData.profilePic}`}
                                              alt={userData.profilePic}/>
                                         <span className={'profile-username'}>{userData.username}</span>
                                     </NavLink>
+                                    <span className={'profile-field'}>{userData.followers.length} followers</span>
+                                    <span className={'profile-field'}>user since {MONTHS[new Date(userData.createdDate).getMonth()] + ' ' + new Date(userData.createdDate).getDay() + ', ' + new Date(userData.createdDate).getFullYear()}</span>
                                 </div>
                             </div>
                             : <div>
@@ -119,7 +136,7 @@ function Search (props) {
             </section>
             <section className={'post-results'}>
                 <div className={'search-section-container'}>
-                    <h2 className={'search-header'}>post results for {query} ({postResponseLength})</h2>
+                    <h2 className={'search-header'}>post results for '{query}' ({postResponseLength})</h2>
                 </div>
                 <section>
                     <Feed user={user} setUser={setUser} query={query} setQuery={clickTagInvoke} feedDataRef={feedDataRef}/>
