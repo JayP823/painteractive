@@ -169,14 +169,15 @@ async function gallery(req, res){
     User.findOne({_id: req.user.sub}).then(user => {
         if(user.gallery.includes(req.body.postID)){
             user.gallery.remove(req.body.postID);
-            User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
-            res.json("removed from gallery")
+            User.updateOne({_id: req.user.sub}, {gallery: user.gallery}).then((post) => {
+                res.json("removed from gallery")
+            });
         } else {
-            console.log(req.body);
             user.gallery.push(req.body.postID);
-            console.log(user.gallery)
-            User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
-            res.json("added to gallery")
+            User.updateOne({_id: req.user.sub}, {gallery: user.gallery}).then((post) => {
+                res.json("added to gallery")
+            });
+            
         }
     })
 }
