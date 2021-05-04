@@ -85,6 +85,6 @@ function getUser(req, res, next){
 }
 
 function gallery(req, res, next){
-    userService.gallery().then(
+    userService.gallery(req.query.user).then(
         res.json({}));
 }

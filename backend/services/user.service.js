@@ -137,7 +137,7 @@ async function getMedia(user){
     return await Post.find({$and: [{$or: [{createdBy: user}, {reposted: user}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
-async function gallery(){
+async function gallery(user){
     let skipNum = req.query.page * 12;
     return await User.find().sort({createdDate: -1}).skip(skipNum).limit(12);
 }
