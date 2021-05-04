@@ -1,7 +1,8 @@
 const config = require('../config.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {ObjectID} = require('mongodb')
+var mongoose = require('mongoose');
+
 
 module.exports = {
     getByUsername,
@@ -125,21 +126,23 @@ async function updateUser(userParam, userID, files, res){
 
 async function getUserPosts(req){
     let skipNum = req.query.page * 12;
-    let user2 = await User.find({username: req.query.username});
-
-    return await Post.find({$or: [{createdBy: ObjectID(user2._id)}, {reposted:  ObjectID(user2._id)}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
+    let user = await User.find({username: req.query.username});
+    let user2 = user[0];
+    let posts = await Post.find({$or: [{createdBy: user2._id}, {reposted:  user2._id}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
+    console.log(posts)
+    return await Post.find({$or: [{createdBy: user2._id}, {reposted: user2._id}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function getUserLikedPosts(req){
     let skipNum = req.query.page * 12;
     let user2 = await User.find({username: req.query.username});
-    return await Post.find({liked: ObjectID(user2._id)}).sort({createdDate: -1}).skip(skipNum).limit(12);
+    return await Post.find({liked: user2._id}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function getMedia(req){
     let skipNum = req.query.page * 12;
     let user2 = await User.find({username: req.query.username});
-    return await Post.find({$and: [{$or: [{createdBy: ObjectID(user2._id)}, {reposted: ObjectID(user2._id)}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
+    return await Post.find({$and: [{$or: [{createdBy: user2._id}, {reposted: user2._id}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function gallery(req){
