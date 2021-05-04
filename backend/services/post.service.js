@@ -62,13 +62,13 @@ async function deletePost(name) {
 }
 
 async function getPostInfo(req, res){
-    Post.findOne({postID: req.params.id}).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.findOne({postID: req.params.id}).populate({path:'createdBy'}).populate('image').then(post => {
         res.json(post);
     });
 }
 
 async function getAllPostInfo(req, res){
-    Post.find().populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.find().populate({path:'createdBy'}).populate('image').then(post => {
         res.json(post);
     });
 }
@@ -78,7 +78,7 @@ async function getSomePostInfo(req, res){
         req.query.date = new Date();
     }
     let skipNum = req.query.page * 12;
-    Post.find({}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.find({}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate('image').then(post => {
         res.json(post);
     });
 }
@@ -97,7 +97,7 @@ async function showImage(req, res){
 
 async function getPostsWithTag(req, res){
     let skipNum = req.query.page * 12;
-    Post.find({tags: req.params.tag}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy', select:'username'}).populate('image').then(post => {
+    Post.find({tags: req.params.tag}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate('image').then(post => {
         res.json(post);
     });
 }
