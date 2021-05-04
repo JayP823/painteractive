@@ -168,13 +168,13 @@ async function repost(req, res){
 
 async function gallery(req, res){
     User.findOne({_id: req.user.sub}).then(user => {
-        if(user.gallery.includes(req.body.postID)){
-            user.gallery.remove(req.body.postID);
+        if(user.gallery.includes(req.body._id)){
+            user.gallery.remove(req.body._id);
             User.updateOne({_id: req.user.sub}, {gallery: user.gallery}).then((post) => {
                 res.json("removed from gallery")
             });
         } else {
-            user.gallery.push(req.body.postID);
+            user.gallery.push(req.body._id);
             User.updateOne({_id: req.user.sub}, {gallery: user.gallery}).then((post) => {
                 res.json("added to gallery")
             });
