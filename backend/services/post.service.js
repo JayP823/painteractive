@@ -193,7 +193,7 @@ async function postComment(req, res){
 }
 
 async function getComments(req, res){
-    Post.findOne({postID: req.query.postID}).then(post => {
+    Post.findOne({postID: req.query.postID}).populate('createdBy').then(post => {
         console.log(post)
         res.json(post.comments);
     })
