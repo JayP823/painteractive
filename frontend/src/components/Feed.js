@@ -8,8 +8,6 @@ function Feed (props) {
     let user = props.user;
 
     let updatePosts = (newPosts, replace) => {
-        console.log(newPosts);
-        console.log(replace);
         if (replace) {
             setPostData(newPosts);
         } else {

@@ -55,7 +55,6 @@ function Profile (props) {
     }
 
     const feedDataInvoke = (newData, replace) => {
-        console.log(feedData);
         if (feedData) feedData(newData, replace);
     }
 

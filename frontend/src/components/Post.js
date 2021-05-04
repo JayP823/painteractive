@@ -21,7 +21,7 @@ function Post (props) {
         if (user.gallery.includes(post.postID)) setIsGalleried(true);
     }
 
-    console.log(post);
+    //console.log(post);
 
     return (
         <div className='content-wrapper'>
