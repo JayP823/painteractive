@@ -128,6 +128,8 @@ async function getUserPosts(req){
     let skipNum = req.query.page * 12;
     let user = await User.find({username: req.query.username});
     let user2 = user[0];
+    let post = await Post.find({$or: [{createdBy: user2._id}, {reposted: user2._id}]}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image');
+    console.log(post[0].createdBy)
     return await Post.find({$or: [{createdBy: user2._id}, {reposted: user2._id}]}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image');
 }
 
