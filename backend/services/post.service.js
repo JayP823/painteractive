@@ -68,8 +68,9 @@ async function getPostInfo(req, res){
 }
 
 async function getAllPostInfo(req, res){
+    let count = Post.find({tags: req.params.tag}).count();
     Post.find().populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').then(post => {
-        res.json(post);
+        res.json({post: post, count: count});
     });
 }
 
