@@ -115,7 +115,7 @@ function App() {
                             <Switch>
                                 <Route exact path={"/"}><Home user={user}/></Route>
                                 <Route path={"/profile/:username"}><Profile user={user}/></Route>
-                                <Route path={"/search"}><Search/></Route>
+                                <Route path={"/search"}><Search user={user}/></Route>
                                 <Route path={"/messages"}><Inbox/></Route>
                                 <Route path={"/gallery"}><Gallery/></Route>
                                 <Route path="/404"><PageNotFound/></Route>

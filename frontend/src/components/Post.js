@@ -36,7 +36,7 @@ function Post (props) {
             </div>
             <div className='tags'>
                 <ul className='tag-list'>
-                    {tags.map((tag, index) => {return <Tag highlighted={false} deletable={null} hasLink={true} tagName={tag} key={'post-' + props.index + '-' + index}/>})}
+                    {tags.map((tag, index) => {return <Tag highlighted={false} setQuery={props.setQuery} deletable={null} hasLink={true} tagName={tag} key={'post-' + props.index + '-' + index}/>})}
                 </ul>
                 <section className='interaction-list'>
                     <div className='like-button'>

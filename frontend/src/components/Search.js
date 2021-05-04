@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Feed from "./Feed";
 import UseFormInput from "./UseFormInput";
-import {NavLink} from "react-router-dom";
 
 function Search (props) {
     let user = props.user;
@@ -26,6 +25,13 @@ function Search (props) {
         if (feedData) feedData(newData, replace);
     }
 
+    const clickTagInvoke = (tagName) => {
+        setQuery(tagName);
+        setPageNumber(0);
+        setLoadingPosts(true);
+        setLoadingUser(true);
+    }
+
     const loadNewPage = () => {
         setPageNumber(pageNumber + 1);
         setLoadingPosts(true);
@@ -42,7 +48,7 @@ function Search (props) {
         if (loadingUser) {
             axios.get(`/user/search?username=${query}`).then(response => {
                 setUserData(response.data[0]);
-                setPostResponseLength(response.data.length);
+                setUserResponseLength(response.data.length);
                 setLoadingUser(false);
                 return response;
             }).catch(error => {
@@ -92,7 +98,7 @@ function Search (props) {
             <section className={'user-results'}>
                 {!loadingUser &&
                 <div className={'search-section-container'}>
-                    <h2 className={'search-header'}>user results for {query}</h2>
+                    <h2 className={'search-header'}>user results for {query} ({userResponseLength})</h2>
                     <div className={'search-res-body'}>
                         {userData ?
                             <div className={'user-results'}>
@@ -116,8 +122,12 @@ function Search (props) {
                     <h2 className={'search-header'}>post results for {query}</h2>
                 </div>
                 <section>
-                    <Feed user={user} feedDataRef={feedDataRef}/>
-                    <button onClick={loadNewPage} disabled={loadingPosts}>Load More Posts</button>
+                    <Feed user={user} query={query} setQuery={clickTagInvoke} feedDataRef={feedDataRef}/>
+                    <div className={'search-footer'}>
+                        <button className={'submit-button'} onClick={loadNewPage} disabled={loadingPosts}>
+                            <span className={'load-text'}>Load More Posts</span>
+                        </button>
+                    </div>
                 </section>
             </section>
         </section>
