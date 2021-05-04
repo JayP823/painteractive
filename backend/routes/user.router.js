@@ -40,5 +40,6 @@ router.get('/posts/media', userController.getMedia);
 router.get('/profile', userController.profile);
 router.post('/follow', userController.follow);
 router.get('/search', userController.getUser)
+router.get('/gallery', userController.gallery)
 
 module.exports = router;

@@ -12,7 +12,8 @@ module.exports = {
     getMedia,
     profile,
     follow,
-    getUser
+    getUser,
+    gallery
 }
 
 function register(req, res, next) {
@@ -81,4 +82,9 @@ function getUser(req, res, next){
     userService.getByUsername(req.query.username).then((user) => {
         res.json(user);
     });
+}
+
+function gallery(req, res, next){
+    userService.gallery().then(
+        res.json({}));
 }
