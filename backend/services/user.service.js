@@ -139,7 +139,7 @@ async function getMedia(user){
 
 async function gallery(user){
     let skipNum = req.query.page * 12;
-    return await User.find().sort({createdDate: -1}).skip(skipNum).limit(12);
+    return await User.find({username: req.query.username}, {gallery: 1}).sort({createdDate: -1}).skip(skipNum).limit(12);
 }
 
 async function follow(req, res){
