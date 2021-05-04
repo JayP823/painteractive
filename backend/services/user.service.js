@@ -149,9 +149,9 @@ async function gallery(req){
     let skipNum = req.query.page * 12;
     let user = await User.find({username: req.query.username});
     let user2 = user[0];
-    let posts = await User.find({_id: user2._id}, {gallery: 1}).sort({createdDate: -1}).populate('image').skip(skipNum).limit(12);
+    let posts = await User.find({_id: user2._id}, {gallery: 1}).sort({createdDate: -1}).populate('gallery').skip(skipNum).limit(12);
     console.log(posts)
-    return await User.find({_id: user2._id}, {gallery: 1}).sort({createdDate: -1}).populate('image').skip(skipNum).limit(12);
+    return await User.find({_id: user2._id}, {gallery: 1}).sort({createdDate: -1}).populate('gallery').skip(skipNum).limit(12);
 }
 
 async function follow(req, res){
