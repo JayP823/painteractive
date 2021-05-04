@@ -1,23 +1,28 @@
 import './Post.css'
 import React, {useState} from 'react';
 import {AiOutlineHeart, AiFillHeart, AiOutlineRetweet} from 'react-icons/ai';
-import customModalStyles from "./CustomModalStyles";
 import Tag from "./Tag";
 import axios from "axios";
 
 function Post (props) {
     let user = props.user;
-    const [fullscreenOpen, setFullscreenOpen] = useState(false);
     const post = props.post;
     let tags = props.post.tags;
+    let index = tags.indexOf('');
+    if (index !== -1) {
+        tags.splice(index, 1);
+    }
     let isLiked = false;
     let isReposted = false;
+    const [isGalleried, setIsGalleried] = useState(false);
     if (user) {
         if (post.liked.includes(user._id)) isLiked = true;
         if (post.reposted.includes(user._id)) isReposted = true;
+        if (user.gallery.includes(post.postID)) setIsGalleried(true);
     }
 
-    // TODO - Let people fullscreen images
+    console.log(post);
+
     return (
         <div className='content-wrapper'>
             <div className='content'>
@@ -43,6 +48,9 @@ function Post (props) {
                     </div>
                     <div className='repost-button'>
                         <RepostButton user={user} postID={post.postID} repostCount={post.reposted.length} defaultState={isReposted}/>
+                    </div>
+                    <div className={'gallery-button'}>
+
                     </div>
                 </section>
             </div>

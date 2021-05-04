@@ -13,7 +13,6 @@ function Profile (props) {
     let username = useParams().username;
     const [profileUser, setProfileUser] = useState(null);
     const [pageNumber, setPageNumber] = useState(0);
-    // Allowed feeds: posts, likes, media, gallery
     const [currentFeed, setCurrentFeed] = useState('posts');
     const [loadingPosts, setLoadingPosts] = useState(false);
     const [following, setFollowing] = useState(false);
@@ -55,14 +54,14 @@ function Profile (props) {
         feedData = handleUpdate;
     }
 
-    const feedDataInvoke = (newData) => {
-        if (feedData) feedData(newData);
+    const feedDataInvoke = (newData, replace) => {
+        console.log(feedData);
+        if (feedData) feedData(newData, replace);
     }
 
     useEffect(() => {
         axios.get(`/user/profile?username=${username}`).then(res => {
             let userData = res.data[0];
-            console.log(userData);
             if (currentUser && userData.followers.includes(currentUser._id)) {
                 setFollowing(true);
             };
@@ -78,10 +77,10 @@ function Profile (props) {
             page: pageNumber,
             username: username
         }
+        let replace = feedParams.page === 0;
 
         axios.get(`/user/posts/${currentFeed}`, {params: feedParams}).then(response => {
-            console.log(response);
-            feedDataInvoke(response.data);
+            feedDataInvoke(response.data, replace);
             return response.data;
         }).catch(error => {
             console.log(error);
@@ -92,7 +91,7 @@ function Profile (props) {
 
     return (
         <div className={'outer-container'}>
-            {profileUser && <div>
+            {profileUser &&
                 <section className={'profile-header'}>
                     <div className={'profile-banner'}>
                         <section className={'banner-overlay'}/>
@@ -148,9 +147,9 @@ function Profile (props) {
                                     </button>
                                 </li>
                                 <li>
-                                    <button className={'profile-button'} disabled={currentFeed === 'likes'}
+                                    <button className={'profile-button'} disabled={currentFeed === 'liked'}
                                             onClick={() => {
-                                                changeFeed('likes')
+                                                changeFeed('liked')
                                             }}>
                                         <FaThumbsUp size={'70%'}/>
                                         <h2>likes</h2>
@@ -180,9 +179,8 @@ function Profile (props) {
                             </ul>
                         </section>
                     </section>
-                </section>
+                </section>}
                 <section className={'profile-feed'}>
-                    {!loadingPosts &&
                     <div className={'feed'}>
                         <Feed user={currentUser} feedDataRef={feedDataRef}/>
                         <div className={'search-footer'}>
@@ -190,9 +188,8 @@ function Profile (props) {
                                 <span className={'load-text'}>Load More Posts</span>
                             </button>
                         </div>
-                    </div>}
+                    </div>
                 </section>
-            </div>}
         </div>
     )
 }

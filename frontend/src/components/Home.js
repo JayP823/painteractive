@@ -40,7 +40,11 @@ function Home (props) {
     return (
         <section className={'home-container'}>
             <Feed user={user} feedDataRef={feedDataRef}/>
-            <button onClick={loadNewPage} disabled={loading}>Load More Posts</button>
+            <div className={'search-footer'}>
+                <button className={'submit-button'} onClick={loadNewPage} disabled={loading}>
+                    <span className={'load-text'}>Load More Posts</span>
+                </button>
+            </div>
         </section>
     )
 }

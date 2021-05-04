@@ -34,6 +34,7 @@
   padding: 20px;
   background-color: #8e7cc3;
   border: 3px solid black;
+  border-right: 2px solid black;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -45,7 +46,7 @@
   height: 10vw;
   background-color: #a594d6;
   border-top: 3px solid black;
-  border-left: 2px solid black;
+  border-left: 3px solid black;
   border-right: 3px solid black;
   border-bottom: 3px solid black;
   box-sizing: border-box;
