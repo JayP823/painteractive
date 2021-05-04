@@ -128,21 +128,21 @@ async function getUserPosts(req){
     let skipNum = req.query.page * 12;
     let user = await User.find({username: req.query.username});
     let user2 = user[0];
-    return await Post.find({$or: [{createdBy: user2._id}, {reposted: user2._id}]}).sort({createdDate: -1}).populate('image').skip(skipNum).limit(12);
+    return await Post.find({$or: [{createdBy: user2._id}, {reposted: user2._id}]}).sort({createdDate: -1}).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').skip(skipNum).limit(12);
 }
 
 async function getUserLikedPosts(req){
     let skipNum = req.query.page * 12;
     let user = await User.find({username: req.query.username});
     let user2 = user[0]
-    return await Post.find({liked: user2._id}).sort({createdDate: -1}).populate('image').skip(skipNum).limit(12);
+    return await Post.find({liked: user2._id}).sort({createdDate: -1}).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').skip(skipNum).limit(12);
 }
 
 async function getMedia(req){
     let skipNum = req.query.page * 12;
     let user = await User.find({username: req.query.username});
     let user2 = user[0];
-    return await Post.find({$and: [{$or: [{createdBy: user2._id}, {reposted: user2._id}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).populate('image').skip(skipNum).limit(12);
+    return await Post.find({$and: [{$or: [{createdBy: user2._id}, {reposted: user2._id}]}, {image: {$exists: true}}]}).sort({createdDate: -1}).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').skip(skipNum).limit(12);
 }
 
 async function gallery(req){
