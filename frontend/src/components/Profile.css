@@ -75,6 +75,16 @@
 .bio-container {
     width: 45%;
     padding: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bio-text {
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
 }
 
 .interact-buttons-container {

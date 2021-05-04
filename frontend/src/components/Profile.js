@@ -107,9 +107,6 @@ function Profile (props) {
                             </div>
                             <div className={'bio-container'}>
                                 <span className={'bio-text'}>{profileUser.bio}</span>
-                                <div className={'bio-edit'}>
-
-                                </div>
                             </div>
                             <div className={'interact-buttons-container'}>
                                 {(currentUser && currentUser.username === username) ?

@@ -20,17 +20,21 @@ function App() {
     const [user, setUser] = useState(null);
     const [loaded, setLoaded] = useState(false);
 
+    const verifyUser = () => {
+        axios.post(`/user/verify`).then(res => {
+            setUser(res.data);
+            setLoaded(true);
+        }).catch(err => {
+            setLoaded(true);
+        })
+    }
+
     const logIn = (user) => {
         if (user) {
             setUser(user);
         }
         else {
-            axios.post(`/user/verify`).then(res => {
-                setUser(res.data);
-                setLoaded(true);
-            }).catch(err => {
-                setLoaded(true);
-            })
+            verifyUser();
         }
     }
 
@@ -112,7 +116,7 @@ function App() {
                             <Switch>
                                 <Route exact path={"/"}><Home user={user}/></Route>
                                 <Route path={"/profile/:username"}><Profile user={user}/></Route>
-                                <Route path={"/accountsettings"}><AccountSettings user={user}/></Route>
+                                <Route path={"/accountsettings"}><AccountSettings user={user} verifyUser={verifyUser}/></Route>
                                 <Route path={"/search"}><Search user={user}/></Route>
                                 <Route path={"/gallery"}><Gallery/></Route>
                                 <Route path="/404"><PageNotFound/></Route>

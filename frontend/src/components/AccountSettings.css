@@ -1,0 +1,48 @@
+.account-settings-wrapper {
+    width: 60%;
+    margin: 15vh auto auto;
+    border: 2px solid black;
+    background-color: #bcafe0;
+}
+
+.account-settings-padding {
+    padding: 7%;
+}
+
+.image-dropzones {
+    width: 80%;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.auth-modal-footer {
+    margin-top: 50px;
+}
+
+.clear-decoration {
+    text-decoration: none;
+}
+
+.account-image-selector {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-thumbnail {
+    max-height: 100%;
+}
+
+.change-picture-text {
+    color: #1b4a8e;
+}
+
+.profile-thumbnail:hover {
+    cursor: pointer;
+}
+
+.change-picture-text:hover {
+    cursor: pointer;
+}

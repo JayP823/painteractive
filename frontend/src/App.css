@@ -67,6 +67,9 @@ Switch {
 .logo {
   max-height: 100%;
   max-width: 100%;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+  box-sizing: border-box;
 }
 
 .nav-list {
