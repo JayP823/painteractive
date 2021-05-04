@@ -193,7 +193,7 @@ async function postComment(req, res){
 }
 
 async function getComments(req, res){
-    Post.findOne({postID: req.query.postID}).populate('user').then(post => {
+    Post.findOne({postID: req.query.postID}).populate({path: 'comments.user'}).then(post => {
         console.log(post)
         res.json(post.comments);
     })
