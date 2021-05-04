@@ -79,9 +79,10 @@ async function getSomePostInfo(req, res){
         req.query.date = new Date();
     }
     let skipNum = req.query.page * 12;
-    let count = Post.find({tags: req.params.tag}).count();
+    let count = await Post.find({}).count();
+    console.log(count);
     Post.find({}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').then(post => {
-        res.json({post: post, count: count});
+        res.json({posts: post, count: count});
     });
 }
 
