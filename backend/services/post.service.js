@@ -97,7 +97,7 @@ async function showImage(req, res){
 
 async function getPostsWithTag(req, res){
     let skipNum = req.query.page * 12;
-    let count = await Post.find({}).count();
+    let count = await Post.find({tags: req.params.tag}).count();
     Post.find({tags: req.params.tag}).sort({createdDate: -1}).skip(skipNum).limit(12).populate({path:'createdBy'}).populate({path: 'comments.user'}).populate('image').then(post => {
         res.json({posts: post, count: count});
     });
