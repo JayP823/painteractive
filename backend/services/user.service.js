@@ -49,8 +49,8 @@ async function register(userParam, files){
     if(!files){
         file.avatar = [];
         file.header = [];
-        file.avatar.push({filename: "fe68485d476e7df54110e4eb71530aa6.jpg"});
-        file.header.push({filename: "7a93a712e7048d843cb9818bda938b88.png"});
+        file.avatar.push({filename: "7a93a712e7048d843cb9818bda938b88.png"});
+        file.header.push({filename: "fe68485d476e7df54110e4eb71530aa6.jpg"});
     } else {
         file = files;
     }
