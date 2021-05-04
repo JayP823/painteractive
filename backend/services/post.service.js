@@ -172,7 +172,8 @@ async function gallery(req, res){
             User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
             res.json("removed from gallery")
         } else {
-            user.gallery.concat(req.body.postID).filter(distinct);
+            console.log(req.body);
+            user.gallery.push(req.body.postID);
             console.log(user.gallery)
             User.updateOne({_id: req.user.sub}, {gallery: user.gallery});
             res.json("added to gallery")

@@ -3,25 +3,52 @@ import React, {useState} from 'react';
 import {AiOutlineHeart, AiFillHeart, AiOutlineRetweet} from 'react-icons/ai';
 import Tag from "./Tag";
 import axios from "axios";
+import {MdPlaylistAdd, MdPlaylistAddCheck} from "react-icons/md";
 
 function Post (props) {
     let user = props.user;
+    let setUser = props.setUser;
     const post = props.post;
     let tags = props.post.tags;
     let index = tags.indexOf('');
-    if (index !== -1) {
-        tags.splice(index, 1);
-    }
+    if (index !== -1) tags.splice(index, 1);
     let isLiked = false;
     let isReposted = false;
-    const [isGalleried, setIsGalleried] = useState(false);
+    const [isGalleried, setIsGalleried] = useState(() => {
+        if (user && user.gallery.includes(post.postID)) {
+            return true;
+        }
+        return false;
+    });
     if (user) {
         if (post.liked.includes(user._id)) isLiked = true;
         if (post.reposted.includes(user._id)) isReposted = true;
-        if (user.gallery.includes(post.postID)) setIsGalleried(true);
     }
 
-    //console.log(post);
+    const addToGallery = () => {
+        axios.post(`/post/addtogallery`, {postID: post.postID}).then(res => {
+            setIsGalleried(true);
+            let updatedUser = user;
+            updatedUser.gallery.push(post.postID);
+            setUser(updatedUser);
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
+    const removeFromGallery = () => {
+        axios.post(`/post/addtogallery`, {postID: post.postID}).then(res => {
+            setIsGalleried(false);
+            let updatedUser = user;
+            let index2 = updatedUser.gallery.indexOf(post.postID);
+            if (index2 !== -1) updatedUser.gallery = updatedUser.gallery.splice(index, 1);
+            setUser(updatedUser);
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
+    console.log(user);
 
     return (
         <div className='content-wrapper'>
@@ -50,7 +77,16 @@ function Post (props) {
                         <RepostButton user={user} postID={post.postID} repostCount={post.reposted.length} defaultState={isReposted}/>
                     </div>
                     <div className={'gallery-button'}>
-
+                        <div className={'interaction-container social-flex'}>
+                            {isGalleried ?
+                                <div className={'social-container'}>
+                                    <MdPlaylistAddCheck className={'liked'} size={'100%'} onClick={removeFromGallery}/>
+                                </div>
+                                : <div className={'social-container'}>
+                                    <MdPlaylistAdd size={'100%'} onClick={addToGallery}/>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </section>
             </div>

@@ -7,7 +7,6 @@ import {AiOutlinePlus} from 'react-icons/ai';
 import axios from "axios";
 import logo from './images/logo.png';
 import SearchModal from "./components/SearchModal";
-import Gallery from "./components/Gallery";
 import PageNotFound from "./components/PageNotFound";
 import Search from "./components/Search";
 import PostModal from "./components/PostModal";
@@ -19,6 +18,7 @@ function App() {
 
     const [user, setUser] = useState(null);
     const [loaded, setLoaded] = useState(false);
+    console.log(user);
 
     const verifyUser = () => {
         axios.post(`/user/verify`).then(res => {
@@ -96,7 +96,7 @@ function App() {
                                         <h3 className={'nav-list-link'}>Search</h3>
                                     </li>
                                     {user && <li className={'nav-green'}>
-                                        <NavLink className='nav-list-link' to={"/gallery"}><h3>Gallery</h3></NavLink>
+                                        <NavLink className='nav-list-link' to={`/profile/${user.username}?p=gallery`}><h3>Gallery</h3></NavLink>
                                     </li>}
                                     {user && <li className='profile nav-blue'>
                                         <NavLink className='nav-list-link' to={`/profile/${user.username}`}>
@@ -114,11 +114,10 @@ function App() {
                         </section>
                         <section className='flex-body'>
                             <Switch>
-                                <Route exact path={"/"}><Home user={user}/></Route>
-                                <Route path={"/profile/:username"}><Profile user={user}/></Route>
+                                <Route exact path={"/"}><Home user={user} setUser={setUser}/></Route>
+                                <Route path={"/profile/:username"}><Profile user={user} setUser={setUser}/></Route>
                                 <Route path={"/accountsettings"}><AccountSettings user={user} verifyUser={verifyUser}/></Route>
-                                <Route path={"/search"}><Search user={user}/></Route>
-                                <Route path={"/gallery"}><Gallery/></Route>
+                                <Route path={"/search"}><Search user={user} setUser={setUser}/></Route>
                                 <Route path="/404"><PageNotFound/></Route>
                                 <Redirect from='*' to='/404'/>
                             </Switch>

@@ -10,10 +10,15 @@ import Feed from "./Feed";
 
 function Profile (props) {
     let currentUser = props.user;
+    let setUser = props.setUser;
     let username = useParams().username;
+    const urlParams = new URLSearchParams(window.location.search);
     const [profileUser, setProfileUser] = useState(null);
     const [pageNumber, setPageNumber] = useState(0);
-    const [currentFeed, setCurrentFeed] = useState('posts');
+    const [currentFeed, setCurrentFeed] = useState(() => {
+        if (urlParams.get('p')) return urlParams.get('p');
+        return 'posts';
+    });
     const [loadingPosts, setLoadingPosts] = useState(false);
     const [following, setFollowing] = useState(false);
     const [loadingFollowing, setLoadingFollowing] = useState(true);
@@ -181,7 +186,7 @@ function Profile (props) {
                 </section>}
                 <section className={'profile-feed'}>
                     <div className={'feed'}>
-                        <Feed user={currentUser} feedDataRef={feedDataRef}/>
+                        <Feed user={currentUser} setUser={setUser} feedDataRef={feedDataRef}/>
                         <div className={'search-footer'}>
                             <button className={'submit-button'} onClick={loadNewPage} disabled={loadingPosts}>
                                 <span className={'load-text'}>Load More Posts</span>

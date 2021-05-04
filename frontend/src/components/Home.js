@@ -5,6 +5,7 @@ import Feed from "./Feed";
 
 function Home (props) {
     let user = props.user;
+    let setUser = props.setUser;
     const [pageNumber, setPageNumber] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -39,7 +40,7 @@ function Home (props) {
 
     return (
         <section className={'home-container'}>
-            <Feed user={user} feedDataRef={feedDataRef}/>
+            <Feed user={user} setUser={setUser} feedDataRef={feedDataRef}/>
             <div className={'search-footer'}>
                 <button className={'submit-button'} onClick={loadNewPage} disabled={loading}>
                     <span className={'load-text'}>Load More Posts</span>

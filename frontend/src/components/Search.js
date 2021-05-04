@@ -6,6 +6,7 @@ import UseFormInput from "./UseFormInput";
 
 function Search (props) {
     let user = props.user;
+    let setUser = props.setUser;
     const urlParams = new URLSearchParams(window.location.search);
     const queryForm = UseFormInput(urlParams.get('q'));
     const [query, setQuery] = useState(urlParams.get('q'));
@@ -122,7 +123,7 @@ function Search (props) {
                     <h2 className={'search-header'}>post results for {query}</h2>
                 </div>
                 <section>
-                    <Feed user={user} query={query} setQuery={clickTagInvoke} feedDataRef={feedDataRef}/>
+                    <Feed user={user} setUser={setUser} query={query} setQuery={clickTagInvoke} feedDataRef={feedDataRef}/>
                     <div className={'search-footer'}>
                         <button className={'submit-button'} onClick={loadNewPage} disabled={loadingPosts}>
                             <span className={'load-text'}>Load More Posts</span>
