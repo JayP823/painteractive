@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Feed from "./Feed";
 import UseFormInput from "./UseFormInput";
+import {NavLink} from "react-router-dom";
 
 function Search (props) {
     let user = props.user;
@@ -66,12 +67,9 @@ function Search (props) {
             }
             let replace = feedParams.page === 0;
 
-            if (replace) {
-                // TODO - Ajax call to get amount of posts with tag
-            }
-
             axios.get(`/post/tag/${query}`, {params: feedParams}).then(response => {
-                feedDataInvoke(response.data, replace);
+                setPostResponseLength(response.data.count);
+                feedDataInvoke(response.data.posts, replace);
                 return response.data;
             }).catch(error => {
                 console.log(error);
@@ -103,11 +101,12 @@ function Search (props) {
                     <div className={'search-res-body'}>
                         {userData ?
                             <div className={'user-results'}>
-                                <div className={'user-res-container'}>
-                                    <div className={'user-res'}>
-                                        {false && <img src={``} alt={'profile picture'}/>}
-                                        <span>{userData.username}</span>
-                                    </div>
+                                <div className={'comment-wrapper'}>
+                                    <NavLink className={'comment-user'} to={'/'}>
+                                        <img className={'profile-image'} src={`/post/show/${userData.profilePic}`}
+                                             alt={userData.profilePic}/>
+                                        <span className={'profile-username'}>{userData.username}</span>
+                                    </NavLink>
                                 </div>
                             </div>
                             : <div>
@@ -120,7 +119,7 @@ function Search (props) {
             </section>
             <section className={'post-results'}>
                 <div className={'search-section-container'}>
-                    <h2 className={'search-header'}>post results for {query}</h2>
+                    <h2 className={'search-header'}>post results for {query} ({postResponseLength})</h2>
                 </div>
                 <section>
                     <Feed user={user} setUser={setUser} query={query} setQuery={clickTagInvoke} feedDataRef={feedDataRef}/>

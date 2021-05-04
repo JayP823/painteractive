@@ -27,7 +27,6 @@ function Post (props) {
     }
     const [commentsOpen, setCommentsOpen] = useState(props.comments);
     const [comments, setComments] = useState(post.comments.reverse());
-    console.log(post.comments.reverse());
     const commentField = UseFormInput('');
     const [submittingComment, setSubmittingComment] = useState(false);
 
