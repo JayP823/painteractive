@@ -160,3 +160,10 @@ Switch {
 .nav-pink:hover {
   background-color: #e896f2;
 }
+
+.profile-image {
+  display: block;
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+}

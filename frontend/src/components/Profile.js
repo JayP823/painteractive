@@ -70,7 +70,7 @@ function Profile (props) {
                 setFollowing(true);
             };
             setLoadingFollowing(false);
-            setProfileUser(res.data[0])
+            setProfileUser(res.data[0]);
         })
     }, []);
 
@@ -100,12 +100,12 @@ function Profile (props) {
                     <div className={'profile-banner'}>
                         <section className={'banner-overlay'}/>
                         <section className={'profile-background'}
-                                 style={{backgroundImage: `url(/post/show/${profileUser.profilePic})`}}/>
+                                 style={{backgroundImage: `url(/post/show/${profileUser.headerPic})`}}/>
                     </div>
                     <section className={'header-bars'}>
                         <section className={'header-bar-1'}>
                             <div className={'user-data'}>
-                                <img className={'profile-image'} src={`/post/show/${profileUser.headerPic}`} alt={profileUser.headerPic}/>
+                                <img className={'profile-image'} src={`/post/show/${profileUser.profilePic}`} alt={profileUser.profilePic}/>
                                 <h2>{username}</h2>
                             </div>
                             <div className={'bio-container'}>

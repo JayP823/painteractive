@@ -110,6 +110,8 @@ function Register (props) {
         setLoading(true);
         axios.post(`/user/register`, { username: username.value, password: password.value, email: email.value, firstName: firstName.value, lastName: lastName.value }).then(response => {
             setLoading(false);
+            props.leaveRegistration();
+            alert('Registered successfully!');
         }).catch(error => {
             setLoading(false);
             if (error.response.status === 401) setError(error.response.data.message);
