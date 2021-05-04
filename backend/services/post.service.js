@@ -183,9 +183,7 @@ async function gallery(req, res){
 async function postComment(req, res){
     Post.findOne({postID: req.body.postID}).then(post => {
         let newComment = {user: req.user.sub, comment: req.body.comment}
-        console.log(newComment)
         post.comments.push(newComment);
-        console.log(post.comments);
         Post.updateOne({postID: req.body.postID}, {comments: post.comments}).then(() => {
             res.json("Comment added to post!");
         });
@@ -193,7 +191,6 @@ async function postComment(req, res){
 }
 
 async function getComments(req, res){
-    console.log(1)
     Post.findOne({postID: req.query.postID}).then(post => {
         console.log(post)
         res.json(post.comments);

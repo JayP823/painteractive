@@ -30,6 +30,8 @@ app.use('/post', require('./routes/post.router'));
 
 
 //TEMP FRONTEND INTERFACE
+
+
 app.get('/', async function(req, res){
     let func = require('./_helpers/database');
     let gfs, Post;
