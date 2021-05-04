@@ -66,12 +66,6 @@
     align-items: center;
 }
 
-.profile-image {
-    display: block;
-    margin: auto;
-    max-height: 100%;
-}
-
 .bio-container {
     width: 45%;
     padding: 1em 0;

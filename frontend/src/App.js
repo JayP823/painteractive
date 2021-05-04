@@ -12,13 +12,13 @@ import Search from "./components/Search";
 import PostModal from "./components/PostModal";
 import Home from "./components/Home";
 import AccountSettings from "./components/AccountSettings";
+import SinglePost from "./components/SinglePost";
 
 
 function App() {
 
     const [user, setUser] = useState(null);
     const [loaded, setLoaded] = useState(false);
-    console.log(user);
 
     const verifyUser = () => {
         axios.post(`/user/verify`).then(res => {
@@ -118,6 +118,7 @@ function App() {
                                 <Route path={"/profile/:username"}><Profile user={user} setUser={setUser}/></Route>
                                 <Route path={"/accountsettings"}><AccountSettings user={user} verifyUser={verifyUser}/></Route>
                                 <Route path={"/search"}><Search user={user} setUser={setUser}/></Route>
+                                <Route path={"/post/:postid"}><SinglePost user={user} setUser={setUser}/></Route>
                                 <Route path="/404"><PageNotFound/></Route>
                                 <Redirect from='*' to='/404'/>
                             </Switch>
