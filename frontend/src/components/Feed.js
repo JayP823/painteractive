@@ -9,14 +9,18 @@ function Feed (props) {
 
     let updatePosts = (newPosts, replace) => {
         if (replace) {
-            setPostData(newPosts);
+            if (newPosts && Object.keys(newPosts).length === 0 && newPosts.constructor === Object){
+                setPostData([]);
+            } else {
+                setPostData(newPosts);
+            }
         } else {
             setPostData(postData.concat(newPosts));
         }
     }
 
     props.feedDataRef(updatePosts);
-
+    
     return (
         <div className='feed-wrapper'>
             {postData.map((post, index) => {
