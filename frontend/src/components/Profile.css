@@ -165,3 +165,10 @@
     display: flex;
     flex-direction: column;
 }
+
+.profile-image-pfp {
+    display: block;
+    margin: auto;
+    max-height: 85%;
+    max-width: 100%;
+}

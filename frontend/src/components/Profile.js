@@ -106,7 +106,7 @@ function Profile (props) {
                     <section className={'header-bars'}>
                         <section className={'header-bar-1'}>
                             <div className={'user-data'}>
-                                <img className={'profile-image'} src={`/post/show/${profileUser.profilePic}`} alt={profileUser.profilePic}/>
+                                <img className={'profile-image-pfp'} src={`/post/show/${profileUser.profilePic}`} alt={profileUser.profilePic}/>
                                 <h2>{username}</h2>
                             </div>
                             <div className={'bio-container'}>
