@@ -1,4 +1,4 @@
-# Painteractive whoaaaaaaaaaaa
+# Painteractive
 
 To run:
 
