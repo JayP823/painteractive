@@ -1,6 +1,8 @@
 # Painteractive
 
-To run:
+Application is live at http://54.237.105.232:2425/.
+
+To run on your local machine:
 
 * Install:
     * [Node.js 15.13.9](https://nodejs.org/en/download/current/)
