@@ -1,6 +1,6 @@
 # Painteractive
 
-Application is live at http://54.237.105.232:2425/.
+Application is live at http://painteractive.jamespark.io/.
 
 To run on your local machine:
 
